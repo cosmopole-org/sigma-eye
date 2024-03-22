@@ -5,7 +5,7 @@ import { Popover, PopoverTrigger, PopoverContent, Button, Input, Navbar, NavbarC
 import Icon from "@/components/elements/icon";
 import { ThemeSwitch } from "@/components/theme-switch";
 
-export const SearchIcon = ({
+const SearchIcon = ({
     size = 24,
     strokeWidth = 1.5,
     ...props
