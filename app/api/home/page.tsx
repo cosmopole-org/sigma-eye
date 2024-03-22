@@ -8,9 +8,11 @@ import { ThemeSwitch } from "@/components/theme-switch";
 const SearchIcon = ({
     size = 24,
     strokeWidth = 1.5,
+    color,
     ...props
-}) => (
+}: { size?: number, strokeWidth?: number, color?: string}) => (
     <svg
+        color={color}
         aria-hidden="true"
         fill="none"
         focusable="false"
@@ -147,11 +149,11 @@ export default function Home() {
             </Tabs>
             <Card isBlurred fullWidth className="grid grid-cols-3 fixed bottom-0 left-0 right-0 w-full h-16 rounded-none">
                 <Card shadow="none" isPressable className="items-center justify-center bg-transparent col-span-1 rounded-none">
-                    <SearchIcon />
+                    <SearchIcon/>
                     People
                 </Card>
-                <Card shadow="none" isPressable className="items-center justify-center bg-transparent col-span-1 rounded-none">
-                    <SearchIcon />
+                <Card shadow="none" isPressable className="text-primary items-center justify-center bg-transparent col-span-1 rounded-none">
+                    <SearchIcon color="#06f" strokeWidth={2.25} />
                     City
                 </Card>
                 <Card shadow="none" isPressable className="items-center justify-center bg-transparent col-span-1 rounded-none">
