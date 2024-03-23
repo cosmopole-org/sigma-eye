@@ -1,5 +1,6 @@
 import * as React from "react";
 import { IconSvgProps } from "@/types";
+import { useTheme } from "next-themes";
 
 export const Logo: React.FC<IconSvgProps> = ({
 	size = 36,
@@ -265,6 +266,14 @@ const icons: { [key: string]: any } = {
 		const { color = '#000000', size = [24, 24] } = props;
 		return (
 			<svg width={size[0]} height={size[1]} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M11.25 12.75V18H12.75V12.75H18V11.25H12.75V6H11.25V11.25H6V12.75H11.25Z" fill={color}></path> </g></svg>
+		)
+	},
+	'back': (props: { color?: string, size?: number[] }) => {
+		let { color = '#000000', size = [24, 24] } = props;
+		const { theme } = useTheme()
+		color = theme === 'light' ? '#000' : '#fff'
+		return (
+			<svg width={size[0]} height={size[1]} viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill={color}><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill={color} d="M224 480h640a32 32 0 1 1 0 64H224a32 32 0 0 1 0-64z"></path><path fill={color} d="m237.248 512 265.408 265.344a32 32 0 0 1-45.312 45.312l-288-288a32 32 0 0 1 0-45.312l288-288a32 32 0 1 1 45.312 45.312L237.248 512z"></path></g></svg>
 		)
 	}
 }

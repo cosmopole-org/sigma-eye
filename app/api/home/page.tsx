@@ -1,16 +1,17 @@
 "use client"
 
-import React from "react";
+import React, { useReducer, useState } from "react";
 import { Popover, PopoverTrigger, PopoverContent, Button, Input, Navbar, NavbarContent, Avatar, Divider, Card, Tabs, Tab } from "@nextui-org/react";
 import Icon from "@/components/elements/icon";
 import { ThemeSwitch } from "@/components/theme-switch";
+import IconButton from "@/components/elements/icon-button";
 
 const SearchIcon = ({
     size = 24,
     strokeWidth = 1.5,
     color,
     ...props
-}: { size?: number, strokeWidth?: number, color?: string}) => (
+}: { size?: number, strokeWidth?: number, color?: string }) => (
     <svg
         color={color}
         aria-hidden="true"
@@ -39,13 +40,65 @@ const SearchIcon = ({
     </svg>
 );
 
+const GalleryIcon = (props: any) => (
+    <svg
+        aria-hidden="true"
+        focusable="false"
+        height="24"
+        role="presentation"
+        viewBox="0 0 24 24"
+        width="24"
+        fill="none"
+        {...props}
+    >
+        <path d="M2.58078 19.0112L2.56078 19.0312C2.29078 18.4413 2.12078 17.7713 2.05078 17.0312C2.12078 17.7613 2.31078 18.4212 2.58078 19.0112Z" fill="currentColor" />
+        <path d="M9.00109 10.3811C10.3155 10.3811 11.3811 9.31553 11.3811 8.00109C11.3811 6.68666 10.3155 5.62109 9.00109 5.62109C7.68666 5.62109 6.62109 6.68666 6.62109 8.00109C6.62109 9.31553 7.68666 10.3811 9.00109 10.3811Z" fill="currentColor" />
+        <path d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.19C2 17.28 2.19 18.23 2.56 19.03C3.42 20.93 5.26 22 7.81 22H16.19C19.83 22 22 19.83 22 16.19V13.9V7.81C22 4.17 19.83 2 16.19 2ZM20.37 12.5C19.59 11.83 18.33 11.83 17.55 12.5L13.39 16.07C12.61 16.74 11.35 16.74 10.57 16.07L10.23 15.79C9.52 15.17 8.39 15.11 7.59 15.65L3.85 18.16C3.63 17.6 3.5 16.95 3.5 16.19V7.81C3.5 4.99 4.99 3.5 7.81 3.5H16.19C19.01 3.5 20.5 4.99 20.5 7.81V12.61L20.37 12.5Z" fill="currentColor" />
+    </svg>
+);
+
+const MusicIcon = (props: any) => (
+    <svg
+        aria-hidden="true"
+        focusable="false"
+        height="24"
+        role="presentation"
+        viewBox="0 0 24 24"
+        width="24"
+        fill="none"
+        {...props}
+    >
+        <path d="M9.66984 13.9219C8.92984 13.9219 8.33984 14.5219 8.33984 15.2619C8.33984 16.0019 8.93984 16.5919 9.66984 16.5919C10.4098 16.5919 11.0098 15.9919 11.0098 15.2619C11.0098 14.5219 10.4098 13.9219 9.66984 13.9219Z" fill="currentColor" />
+        <path d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.18C2 19.83 4.17 22 7.81 22H16.18C19.82 22 21.99 19.83 21.99 16.19V7.81C22 4.17 19.83 2 16.19 2ZM17.12 9.8C17.12 10.41 16.86 10.95 16.42 11.27C16.14 11.47 15.8 11.58 15.44 11.58C15.23 11.58 15.02 11.54 14.8 11.47L12.51 10.71C12.5 10.71 12.48 10.7 12.47 10.69V15.25C12.47 16.79 11.21 18.05 9.67 18.05C8.13 18.05 6.87 16.79 6.87 15.25C6.87 13.71 8.13 12.45 9.67 12.45C10.16 12.45 10.61 12.59 11.01 12.8V8.63V8.02C11.01 7.41 11.27 6.87 11.71 6.55C12.16 6.23 12.75 6.15 13.33 6.35L15.62 7.11C16.48 7.4 17.13 8.3 17.13 9.2V9.8H17.12Z" fill="currentColor" />
+    </svg>
+);
+
+const VideoIcon = (props: any) => (
+    <svg
+        aria-hidden="true"
+        focusable="false"
+        height="24"
+        role="presentation"
+        viewBox="0 0 24 24"
+        width="24"
+        fill="none"
+        {...props}
+    >
+        <path d="M14.7295 2H9.26953V6.36H14.7295V2Z" fill="currentColor" />
+        <path d="M16.2305 2V6.36H21.8705C21.3605 3.61 19.3305 2.01 16.2305 2Z" fill="currentColor" />
+        <path d="M2 7.85938V16.1894C2 19.8294 4.17 21.9994 7.81 21.9994H16.19C19.83 21.9994 22 19.8294 22 16.1894V7.85938H2ZM14.44 16.1794L12.36 17.3794C11.92 17.6294 11.49 17.7594 11.09 17.7594C10.79 17.7594 10.52 17.6894 10.27 17.5494C9.69 17.2194 9.37 16.5394 9.37 15.6594V13.2594C9.37 12.3794 9.69 11.6994 10.27 11.3694C10.85 11.0294 11.59 11.0894 12.36 11.5394L14.44 12.7394C15.21 13.1794 15.63 13.7994 15.63 14.4694C15.63 15.1394 15.2 15.7294 14.44 16.1794Z" fill="currentColor" />
+        <path d="M7.76891 2C4.66891 2.01 2.63891 3.61 2.12891 6.36H7.76891V2Z" fill="currentColor" />
+    </svg>
+);
+
 export default function Home() {
+    const [showingRooms, setShowingRooms] = useState(false)
     return (
         <div className="w-full h-full">
-            <Navbar shouldHideOnScroll className="pt-8 h-52 pb-16">
+            <Navbar shouldHideOnScroll={!showingRooms} className="pt-8 h-44 pb-12">
                 <NavbarContent as="div" className="items-center w-full" justify="start">
-                    <div className="mt-8 pt-4 w-full">
-                        <div className="flex pl-2">
+                    <div className="mt-8 w-full">
+                        <div className="flex pl-1">
                             <Popover backdrop="blur" placement="bottom-start" showArrow offset={10}>
                                 <PopoverTrigger>
                                     <Avatar
@@ -104,31 +157,64 @@ export default function Home() {
                         <Input
                             classNames={{
                                 base: "max-w-full sm:max-w-[10rem] h-10",
-                                mainWrapper: "h-full",
-                                input: "text-small",
-                                inputWrapper: "mt-7 h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20 rounded-3xl",
+                                mainWrapper: "items-center h-full",
+                                input: "text-small text-center",
+                                inputWrapper: "items-center mt-4 h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20 rounded-3xl",
                             }}
                             placeholder="Type to search..."
                             size="md"
                             startContent={<SearchIcon size={18} />}
                             type="search"
+                            style={{ marginLeft: -1 }}
                         />
-                        <Tabs color={"primary"} aria-label="Tabs colors" radius="full" fullWidth className="mt-12 -ml-2" style={{ width: 'calc(100% + 16px)' }}>
-                            <Tab key="photos" title="Photos" />
-                            <Tab key="music" title="Music" />
-                            <Tab key="videos" title="Videos" />
-                            <Tab key="photos2" title="Photos" />
-                            <Tab key="music2" title="Music" />
-                            <Tab key="videos2" title="Videos" />
+                        <Tabs color={"primary"} radius="full" aria-label="Tabs colors" fullWidth className="mt-7 -ml-2" style={{ width: 'calc(100% + 16px)' }}>
+                            <Tab key="photos" title={
+                                <div className="flex items-center space-x-2">
+                                    <GalleryIcon />
+                                    <span>Photos</span>
+                                </div>
+                            } />
+                            <Tab key="music" title={
+                                <div className="flex items-center space-x-2">
+                                    <MusicIcon />
+                                    <span>Music</span>
+                                </div>
+                            } />
+                            <Tab key="videos" title={
+                                <div className="flex items-center space-x-2">
+                                    <VideoIcon />
+                                    <span>Videos</span>
+                                </div>
+                            } />
+                            <Tab key="photos2" title={
+                                <div className="flex items-center space-x-2">
+                                    <GalleryIcon />
+                                    <span>Photos</span>
+                                </div>
+                            } />
+                            <Tab key="music2" title={
+                                <div className="flex items-center space-x-2">
+                                    <MusicIcon />
+                                    <span>Music</span>
+                                </div>
+                            } />
+                            <Tab key="videos2" title={
+                                <div className="flex items-center space-x-2">
+                                    <VideoIcon />
+                                    <span>Videos</span>
+                                </div>
+                            } />
                         </Tabs>
                     </div>
                 </NavbarContent>
             </Navbar >
             <div
-                className={"w-full h-full overflow-scroll pl-4 pr-4"}
+                className={"relative w-full h-full overflow-scroll pl-4 pr-4"}
             >
                 {users.map(item => (
-                    <Card className="mt-4 m-h-16 w-full bg-transparent" key={item.id} isPressable shadow="none">
+                    <Card onClick={() => {
+                        setShowingRooms(true)
+                    }} className="mt-4 m-h-16 w-full bg-transparent" key={item.id} isPressable shadow="none">
                         <div className="flex gap-2 w-full">
                             <Avatar alt={item.name} className="" size="lg" src={item.avatar} />
                             <div className="flex flex-col">
@@ -138,29 +224,95 @@ export default function Home() {
                         </div>
                     </Card>
                 ))}
+                <Card className="fixed top-44 h-full" style={{
+                    width: 'calc(100% - 78px)', height: 'calc(100% - 176px)', borderRadius: '24px 0px 0px 0px',
+                    transition: 'right 500ms', right: showingRooms ? 0 : '-100%'
+                }}>
+                    <Card radius="none" className="h-10">
+                        <div className="flex h-full">
+                            <IconButton name="back" size={[20, 20]} onClick={() => setShowingRooms(false)} />
+                            <p className="mt-2">
+                                Tower rooms
+                            </p>
+                        </div>
+                    </Card>
+                    <div
+                        className={"relative w-full overflow-scroll pl-4 pr-4"}
+                        style={{ height: 'calc(100% - 40px)' }}
+                    >
+                        {users.map(item => (
+                            <Card onClick={() => {
+                                setShowingRooms(true)
+                            }} className="mt-4 m-h-16 w-full bg-transparent" key={item.id} isPressable shadow="none">
+                                <div className="flex gap-2 w-full">
+                                    <Avatar alt={item.name} className="" size="sm" src={item.avatar} />
+                                    <div className="flex flex-col">
+                                        <span className="text-md text-left">{item.name}</span>
+                                    </div>
+                                </div>
+                            </Card>
+                        ))}
+                    </div>
+                </Card>
             </div>
-            <Tabs color={"primary"} radius="full" fullWidth className="fixed top-4 left-4" style={{ width: 'calc(100% - 32px)' }}>
-                <Tab key="photos" title="Photos" />
-                <Tab key="music" title="Music" />
-                <Tab key="videos" title="Videos" />
-                <Tab key="photos2" title="Photos" />
-                <Tab key="music2" title="Music" />
-                <Tab key="videos2" title="Videos" />
+            <Tabs color={"primary"} radius="full" aria-label="Tabs colors" fullWidth className="fixed top-4 left-4" style={{ width: 'calc(100% - 32px)' }}>
+                <Tab key="photos" title={
+                    <div className="flex items-center space-x-2">
+                        <GalleryIcon />
+                        <span>Photos</span>
+                    </div>
+                } />
+                <Tab key="music" title={
+                    <div className="flex items-center space-x-2">
+                        <MusicIcon />
+                        <span>Music</span>
+                    </div>
+                } />
+                <Tab key="videos" title={
+                    <div className="flex items-center space-x-2">
+                        <VideoIcon />
+                        <span>Videos</span>
+                    </div>
+                } />
+                <Tab key="photos2" title={
+                    <div className="flex items-center space-x-2">
+                        <GalleryIcon />
+                        <span>Photos</span>
+                    </div>
+                } />
+                <Tab key="music2" title={
+                    <div className="flex items-center space-x-2">
+                        <MusicIcon />
+                        <span>Music</span>
+                    </div>
+                } />
+                <Tab key="videos2" title={
+                    <div className="flex items-center space-x-2">
+                        <VideoIcon />
+                        <span>Videos</span>
+                    </div>
+                } />
             </Tabs>
-            <Card isBlurred fullWidth className="grid grid-cols-3 fixed bottom-0 left-0 right-0 w-full h-16 rounded-none">
-                <Card shadow="none" isPressable className="items-center justify-center bg-transparent col-span-1 rounded-none">
-                    <SearchIcon/>
-                    People
-                </Card>
-                <Card shadow="none" isPressable className="text-primary items-center justify-center bg-transparent col-span-1 rounded-none">
-                    <SearchIcon color="#06f" strokeWidth={2.25} />
-                    City
-                </Card>
-                <Card shadow="none" isPressable className="items-center justify-center bg-transparent col-span-1 rounded-none">
-                    <SearchIcon />
-                    Settings
-                </Card>
-            </Card>
+            <Tabs defaultSelectedKey={'city'} color={"primary"} radius="full" aria-label="Tabs colors" fullWidth className="fixed bottom-2 left-2" style={{ width: 'calc(100% - 16px)' }}>
+                <Tab key="people" className="h-13" title={
+                    <div className="items-center">
+                        <GalleryIcon width={20} height={20} />
+                        <span style={{ marginLeft: -8 }} className="text-xs">People</span>
+                    </div>
+                } />
+                <Tab key="city" className="h-13" title={
+                    <div className="items-center">
+                        <MusicIcon width={20} height={20} />
+                        <span style={{ marginLeft: -1 }} className="text-xs">City</span>
+                    </div>
+                } />
+                <Tab key="settings" className="h-13" title={
+                    <div className="items-center">
+                        <VideoIcon width={20} height={20} />
+                        <span style={{ marginLeft: -11 }} className="text-xs">Settings</span>
+                    </div>
+                } />
+            </Tabs>
         </div>
     );
 }
