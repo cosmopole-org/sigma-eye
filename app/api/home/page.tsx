@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useReducer, useState } from "react";
-import { Popover, PopoverTrigger, PopoverContent, Button, Input, Navbar, NavbarContent, Avatar, Divider, Card, Tabs, Tab } from "@nextui-org/react";
+import { Popover, PopoverTrigger, PopoverContent, Button, Input, Navbar, NavbarContent, Avatar, Divider, Card, Tabs, Tab, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from "@nextui-org/react";
 import Icon from "@/components/elements/icon";
 import { ThemeSwitch } from "@/components/theme-switch";
 import IconButton from "@/components/elements/icon-button";
@@ -93,6 +93,7 @@ const VideoIcon = (props: any) => (
 
 export default function Home() {
     const [showingRooms, setShowingRooms] = useState(false)
+    const [showingRoom, setShowingRoom] = useState(false)
     return (
         <div className="w-full h-full">
             <Navbar shouldHideOnScroll={!showingRooms} className="pt-8 h-44 pb-12">
@@ -242,7 +243,7 @@ export default function Home() {
                     >
                         {users.map(item => (
                             <Card onClick={() => {
-                                setShowingRooms(true)
+                                setShowingRoom(true)
                             }} className="mt-4 m-h-16 w-full bg-transparent" key={item.id} isPressable shadow="none">
                                 <div className="flex gap-2 w-full">
                                     <Avatar alt={item.name} className="" size="sm" src={item.avatar} />
@@ -313,6 +314,134 @@ export default function Home() {
                     </div>
                 } />
             </Tabs>
+            <Modal
+                placement="bottom"
+                size={'full'}
+                isOpen={showingRoom}
+                onClose={() => setShowingRoom(false)}
+            >
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader>
+                                Room 1
+                            </ModalHeader>
+                            <ModalBody className="overflow-auto">
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    Nullam pulvinar risus non risus hendrerit venenatis.
+                                    Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                                </p>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    Nullam pulvinar risus non risus hendrerit venenatis.
+                                    Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                                </p>
+                                <p>
+                                    Magna exercitation reprehenderit magna aute tempor cupidatat consequat elit
+                                    dolor adipisicing. Mollit dolor eiusmod sunt ex incididunt cillum quis.
+                                    Velit duis sit officia eiusmod Lorem aliqua enim laboris do dolor eiusmod.
+                                </p>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    Nullam pulvinar risus non risus hendrerit venenatis.
+                                    Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                                </p>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    Nullam pulvinar risus non risus hendrerit venenatis.
+                                    Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                                </p>
+                                <p>
+                                    Magna exercitation reprehenderit magna aute tempor cupidatat consequat elit
+                                    dolor adipisicing. Mollit dolor eiusmod sunt ex incididunt cillum quis.
+                                    Velit duis sit officia eiusmod Lorem aliqua enim laboris do dolor eiusmod.
+                                </p>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    Nullam pulvinar risus non risus hendrerit venenatis.
+                                    Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                                </p>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    Nullam pulvinar risus non risus hendrerit venenatis.
+                                    Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                                </p>
+                                <p>
+                                    Magna exercitation reprehenderit magna aute tempor cupidatat consequat elit
+                                    dolor adipisicing. Mollit dolor eiusmod sunt ex incididunt cillum quis.
+                                    Velit duis sit officia eiusmod Lorem aliqua enim laboris do dolor eiusmod.
+                                </p>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    Nullam pulvinar risus non risus hendrerit venenatis.
+                                    Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                                </p>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    Nullam pulvinar risus non risus hendrerit venenatis.
+                                    Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                                </p>
+                                <p>
+                                    Magna exercitation reprehenderit magna aute tempor cupidatat consequat elit
+                                    dolor adipisicing. Mollit dolor eiusmod sunt ex incididunt cillum quis.
+                                    Velit duis sit officia eiusmod Lorem aliqua enim laboris do dolor eiusmod.
+                                </p>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    Nullam pulvinar risus non risus hendrerit venenatis.
+                                    Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                                </p>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    Nullam pulvinar risus non risus hendrerit venenatis.
+                                    Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                                </p>
+                                <p>
+                                    Magna exercitation reprehenderit magna aute tempor cupidatat consequat elit
+                                    dolor adipisicing. Mollit dolor eiusmod sunt ex incididunt cillum quis.
+                                    Velit duis sit officia eiusmod Lorem aliqua enim laboris do dolor eiusmod.
+                                </p>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    Nullam pulvinar risus non risus hendrerit venenatis.
+                                    Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                                </p>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    Nullam pulvinar risus non risus hendrerit venenatis.
+                                    Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                                </p>
+                                <p>
+                                    Magna exercitation reprehenderit magna aute tempor cupidatat consequat elit
+                                    dolor adipisicing. Mollit dolor eiusmod sunt ex incididunt cillum quis.
+                                    Velit duis sit officia eiusmod Lorem aliqua enim laboris do dolor eiusmod.
+                                </p>
+                                <Tabs defaultSelectedKey={'board'} color={"primary"} radius="full" aria-label="Tabs colors" fullWidth className="fixed bottom-2 left-2" style={{ width: 'calc(100% - 16px)' }}>
+                                    <Tab key="board" className="h-13" title={
+                                        <div className="items-center">
+                                            <GalleryIcon width={20} height={20} />
+                                            <span style={{ marginLeft: -8 }} className="text-xs">Board</span>
+                                        </div>
+                                    } />
+                                    <Tab key="chat" className="h-13" title={
+                                        <div className="items-center">
+                                            <MusicIcon width={20} height={20} />
+                                            <span style={{ marginLeft: -1 }} className="text-xs">Chat</span>
+                                        </div>
+                                    } />
+                                    <Tab key="files" className="h-13" title={
+                                        <div className="items-center">
+                                            <VideoIcon width={20} height={20} />
+                                            <span style={{ marginLeft: -11 }} className="text-xs">Files</span>
+                                        </div>
+                                    } />
+                                </Tabs>
+                            </ModalBody>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
         </div>
     );
 }
