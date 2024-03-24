@@ -1,6 +1,6 @@
-import { Avatar, Card } from "@nextui-org/react"
+import { Card } from "@nextui-org/react"
 import IconButton from "../elements/icon-button"
-import { getUsers, randEmoji } from "@/api/offline/constants"
+import { getUsers } from "@/api/offline/constants"
 import { switchRoomModal } from "./room-modal"
 import { hookstate, useHookstate } from "@hookstate/core"
 
