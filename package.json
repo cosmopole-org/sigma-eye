@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookstate/core": "^4.0.1",
     "@nextui-org/react": "^2.2.10",
     "@nextui-org/system": "2.0.15",
     "@nextui-org/theme": "2.1.17",
