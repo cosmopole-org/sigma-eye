@@ -4,7 +4,7 @@ import { getUsers } from "@/api/offline/constants"
 import { switchRoomModal } from "./room-modal"
 import { hookstate, useHookstate } from "@hookstate/core"
 
-const roomsListView = hookstate(false);
+export const roomsListView = hookstate(false);
 
 export const switchRoomsList = (v: boolean) => {
     roomsListView.set(v);
@@ -14,8 +14,8 @@ export default function HomeRoomsList() {
     const roomsListState = useHookstate(roomsListView);
     return (
         <Card className="fixed top-44 h-full" style={{
-            width: 'calc(100% - 78px)', height: 'calc(100% - 176px)', borderRadius: '24px 0px 0px 0px',
-            transition: 'right 500ms', right: roomsListState.get({ noproxy: true }) ? 0 : '-100%'
+            width: 'calc(100% - 78px)', height: 'calc(100% - 176px)', borderRadius: '24px 0px 0px 0px', right: 0,
+            transition: 'transform 250ms', transform: roomsListState.get({ noproxy: true }) ? 'translateX(0px)' : 'translateX(+100%)'
         }}>
             <Card radius="none" className="h-10">
                 <div className="flex h-full">

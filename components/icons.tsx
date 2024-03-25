@@ -276,15 +276,15 @@ const icons: { [key: string]: any } = {
 			<svg width={size[0]} height={size[1]} viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill={color}><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill={color} d="M224 480h640a32 32 0 1 1 0 64H224a32 32 0 0 1 0-64z"></path><path fill={color} d="m237.248 512 265.408 265.344a32 32 0 0 1-45.312 45.312l-288-288a32 32 0 0 1 0-45.312l288-288a32 32 0 1 1 45.312 45.312L237.248 512z"></path></g></svg>
 		)
 	},
-	'video': (props: any) => {
+	'video': ({ size = [24, 24], ...props }: any) => {
 		return (
 			<svg
 				aria-hidden="true"
 				focusable="false"
-				height="24"
+				height={size[1]}
 				role="presentation"
 				viewBox="0 0 24 24"
-				width="24"
+				width={size[0]}
 				fill="none"
 				{...props}
 			>
@@ -295,14 +295,14 @@ const icons: { [key: string]: any } = {
 			</svg>
 		)
 	},
-	'search': (props: any) => (
+	'search': ({ size = [24, 24], ...props }: any) => (
 		<svg
 			aria-hidden="true"
 			focusable="false"
-			height="24"
+			height={size[1]}
 			role="presentation"
 			viewBox="0 0 24 24"
-			width="24"
+			width={size[0]}
 			fill="none"
 			{...props}
 		>
@@ -322,14 +322,14 @@ const icons: { [key: string]: any } = {
 			/>
 		</svg>
 	),
-	'gallery': (props: any) => (
+	'gallery': ({ size = [24, 24], ...props }: any) => (
 		<svg
 			aria-hidden="true"
 			focusable="false"
-			height="24"
+			height={size[1]}
 			role="presentation"
 			viewBox="0 0 24 24"
-			width="24"
+			width={size[0]}
 			fill="none"
 			{...props}
 		>
@@ -338,14 +338,14 @@ const icons: { [key: string]: any } = {
 			<path d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.19C2 17.28 2.19 18.23 2.56 19.03C3.42 20.93 5.26 22 7.81 22H16.19C19.83 22 22 19.83 22 16.19V13.9V7.81C22 4.17 19.83 2 16.19 2ZM20.37 12.5C19.59 11.83 18.33 11.83 17.55 12.5L13.39 16.07C12.61 16.74 11.35 16.74 10.57 16.07L10.23 15.79C9.52 15.17 8.39 15.11 7.59 15.65L3.85 18.16C3.63 17.6 3.5 16.95 3.5 16.19V7.81C3.5 4.99 4.99 3.5 7.81 3.5H16.19C19.01 3.5 20.5 4.99 20.5 7.81V12.61L20.37 12.5Z" fill="currentColor" />
 		</svg>
 	),
-	'music': (props: any) => (
+	'music': ({ size = [24, 24], ...props }: any) => (
 		<svg
 			aria-hidden="true"
 			focusable="false"
-			height="24"
+			height={size[1]}
 			role="presentation"
 			viewBox="0 0 24 24"
-			width="24"
+			width={size[0]}
 			fill="none"
 			{...props}
 		>
