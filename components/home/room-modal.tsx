@@ -2,6 +2,7 @@ import Board from "@/app/page";
 import { Modal, ModalBody, ModalContent, ModalHeader, Tab, Tabs } from "@nextui-org/react";
 import Icon from "../elements/icon";
 import { hookstate, useHookstate } from "@hookstate/core";
+import RoomBottomNav from "./room-bottomnav";
 
 export const roomModalView = hookstate(false);
 
@@ -26,26 +27,7 @@ export default function RoomModal() {
                         </ModalHeader>
                         <ModalBody className="overflow-auto">
                             <Board />
-                            <Tabs defaultSelectedKey={'board'} color={"primary"} radius="full" aria-label="Tabs colors" fullWidth className="fixed bottom-2 left-2" style={{ width: 'calc(100% - 16px)' }}>
-                                <Tab key="board" className="h-13" title={
-                                    <div className="items-center">
-                                        <Icon name="gallery" size={[20, 20]} />
-                                        <span style={{ marginLeft: -8 }} className="text-xs">Board</span>
-                                    </div>
-                                } />
-                                <Tab key="chat" className="h-13" title={
-                                    <div className="items-center">
-                                        <Icon name="music" size={[20, 20]} />
-                                        <span style={{ marginLeft: -1 }} className="text-xs">Chat</span>
-                                    </div>
-                                } />
-                                <Tab key="files" className="h-13" title={
-                                    <div className="items-center">
-                                        <Icon name="video" size={[20, 20]} />
-                                        <span style={{ marginLeft: -11 }} className="text-xs">Files</span>
-                                    </div>
-                                } />
-                            </Tabs>
+                            <RoomBottomNav />
                         </ModalBody>
                     </>
                 )}
