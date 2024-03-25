@@ -2,84 +2,27 @@
 
 import React, { MouseEvent, useEffect, useRef, useState } from "react";
 
-type Box = { el: HTMLDivElement | any, x: number, y: number, w: number, h: number, color: string, oldY: number }
+type Box = { el: HTMLDivElement | any, key: string, x: number, y: number, w: number, h: number, color: string, oldY: number }
 
 let boxes: { [id: string]: Box } = {
-	red: { el: null, x: 0, y: 0, w: 150, h: 150, color: 'red', oldY: 0 },
-	green: { el: null, x: 150, y: 0, w: 150, h: 150, color: 'green', oldY: 0 },
-	blue: { el: null, x: 0, y: 150, w: 150, h: 150, color: 'blue', oldY: 150 }
+	red: { el: null, key: 'red', x: 0, y: 0, w: 150, h: 150, color: 'red', oldY: 0 },
+	green: { el: null, key: 'green', x: 0, y: 150, w: 150, h: 150, color: 'green', oldY: 150 },
+	blue: { el: null, key: 'blue', x: 0, y: 300, w: 150, h: 150, color: 'blue', oldY: 300 }
 }
 let dragging: string | undefined = undefined;
 let mdX = 0, mdY = 0
 let x = 0, y = 0
-let shadowDropY = 0
 
 const xColided = (b1: Box, b2: Box) => {
-	return ((b1.x < b2.x && b2.x < (b1.x + b1.w)) || (b2.x < b1.x && b1.x < (b2.x + b2.w)))
-}
-
-const yColided = (b1: Box, b2: Box, options?: { compareWithOld?: boolean, softColided?: boolean }) => {
-	if (options?.compareWithOld) {
-		if (options?.softColided) {
-			const heg = Math.abs((b1.y + (b1.h / 2)) - (b2.oldY + (b2.h / 2)))
-			return (heg < (b2.h / 2))
-		} else {
-			return ((b1.y < b2.oldY && b2.oldY < (b1.y + b1.h)) || (b2.oldY < b1.y && b1.y < (b2.oldY + b2.h)))
-		}
-	} else {
-		if (options?.softColided) {
-			const heg = Math.abs((b1.y + (b1.h / 2)) - (b2.y + (b2.h / 2)))
-			return (heg < (b2.h / 2))
-		} else {
-			return ((b1.y < b2.y && b2.y <= (b1.y + b1.h)) || (b2.y < b1.y && b1.y < (b2.y + b2.h)))
-		}
-	}
-}
-
-let lastFrameDiffX = 0, lastFrameDiffY = 0;
-
-const measureRealtime = () => {
-	let bs = Object.keys(boxes).sort((key1: string, key2: string) => (boxes[key1].oldY - boxes[key2].oldY))
-	bs.forEach((k: string) => {
-		if (k !== dragging) {
-			const box = boxes[k]
-			let newY = 0
-			Object.keys(boxes).forEach((k2: string) => {
-				if (k2 !== k) {
-					const temp = boxes[k2]
-					if (xColided(box, temp)) {
-						if (k2 === dragging) {
-							if (yColided(temp, box, { compareWithOld: true, softColided: true })) {
-								if (newY < (shadowDropY + temp.h)) {
-									newY = shadowDropY + temp.h
-								}
-							}
-						} else {
-							if (temp.y <= box.y) {
-								if (newY < (temp.y + temp.h)) {
-									newY = (temp.y + temp.h)
-								}
-							}
-						}
-					}
-				}
-			})
-			box.y = newY
-		}
-	})
-	Object.keys(boxes).forEach((k: string) => {
-		if (k !== dragging) {
-			boxes[k].el.style.transform = `translate(${boxes[k].x}px, ${boxes[k].y}px)`
-		}
-	})
+	return ((b1.x <= b2.x && b2.x < (b1.x + b1.w)) || (b2.x <= b1.x && b1.x < (b2.x + b2.w)))
 }
 
 const measureFinal = () => {
-	let bs = Object.keys(boxes).sort((key1: string, key2: string) => (boxes[key1].oldY - boxes[key2].oldY))
+	let bs = Object.keys(boxes).sort((key1: string, key2: string) => (boxes[key1].y - boxes[key2].y))
 	bs.forEach((k: string) => {
 		const box = boxes[k]
 		let newY = 0
-		Object.keys(boxes).forEach((k2: string) => {
+		bs.forEach((k2: string) => {
 			if (k2 !== k) {
 				const temp = boxes[k2]
 				if (xColided(box, temp)) {
@@ -98,28 +41,6 @@ const measureFinal = () => {
 	})
 }
 
-const measureShadow = () => {
-	if (dragging) {
-		const box = boxes[dragging]
-		let newY = 0
-		Object.keys(boxes).forEach((k2: string) => {
-			if (k2 !== dragging) {
-				const temp = boxes[k2]
-				if (xColided(box, temp)) {
-					if (temp.y <= box.y) {
-						if (newY < (temp.y + temp.h)) {
-							newY = (temp.y + temp.h)
-						}
-					}
-				}
-			}
-		})
-		shadowDropY = newY
-	}
-}
-
-let mouseMoveTimeout: NodeJS.Timeout | undefined = undefined
-
 export default function Board() {
 	const [dragId, setDragId] = useState<string | undefined>(undefined);
 	const shadowRef = useRef<HTMLDivElement>(null);
@@ -134,69 +55,41 @@ export default function Board() {
 				Object.keys(boxes).map((k: string) => (
 					<div
 						id={k}
-						style={{ zIndex: 2, border: dragId === k ? '2px solid #fff' : undefined, transition: dragId === k ? undefined : 'transform 100ms', backgroundColor: boxes[k].color, width: 150, height: 150, transform: `translate(${boxes[k].x}px, ${boxes[k].y}px)`, position: 'absolute', left: 0, top: 0 }}
+						style={{ border: dragId === k ? '2px solid #fff' : undefined, transition: dragging === k ? undefined : 'transform 100ms', backgroundColor: dragging === k ? '#fff' : boxes[k].color, width: 150, height: 150, transform: `translate(${boxes[k].x}px, ${boxes[k].y}px)`, position: 'absolute', left: 0, top: 0 }}
 					/>
 				))
 			}
-			{
-				dragging ? (
-					<div
-						ref={shadowRef}
-						style={{ zIndex: 1, backgroundColor: '#fff', width: 150, height: 150, transform: `translate(${boxes[dragging].x}px, ${boxes[dragging].y}px)`, position: 'absolute', left: 0, top: 0 }}
-					/>
-				) : null
-			}
 			<div
-				className="w-full h-full absolute left-0 top-0" style={{ zIndex: 3 }}
+				ref={shadowRef}
+				style={{ display: 'none', backgroundColor: dragging ? boxes[dragging].color : 'transparent', width: 150, height: 150, transform: `translate(${x - mdX}px, ${y - mdY}px)`, position: 'absolute', left: 0, top: 0 }}
+			/>
+			<div
+				className="w-full h-full absolute left-0 top-0"
 				onMouseMove={(e: MouseEvent<HTMLDivElement>) => {
 					if (dragging) {
-						lastFrameDiffX = x
-						lastFrameDiffY = y
 						x = e.clientX;
 						y = e.clientY;
 						if (boxes[dragging]?.el) {
 							boxes[dragging].x = x - mdX
 							boxes[dragging].y = y - mdY
-							boxes[dragging].el.style.transform = `translate(${boxes[dragging].x}px, ${boxes[dragging].y}px)`
 							if (shadowRef.current) {
-								measureShadow()
-								shadowRef.current.style.transform = `translate(${boxes[dragging].x}px, ${shadowDropY}px)`
+								shadowRef.current.style.transform = `translate(${x - mdX}px, ${y - mdY}px)`
 							}
-							if (!mouseMoveTimeout || Math.abs(x - lastFrameDiffX) > 10 || Math.abs(y - lastFrameDiffY) > 10) {
-								if (mouseMoveTimeout) {
-									clearTimeout(mouseMoveTimeout)
-								}
-								mouseMoveTimeout = setTimeout(() => {
-									measureRealtime()
-									mouseMoveTimeout = undefined
-								}, 50);
-							}
+							measureFinal()
 						}
 					}
 				}}
 				onTouchMove={e => {
 					if (dragging) {
-						lastFrameDiffX = x
-						lastFrameDiffY = y
 						x = e.touches[0].clientX;
 						y = e.touches[0].clientY;
 						if (boxes[dragging]?.el) {
 							boxes[dragging].x = x - mdX
 							boxes[dragging].y = y - mdY
-							boxes[dragging].el.style.transform = `translate(${boxes[dragging].x}px, ${boxes[dragging].y}px)`
 							if (shadowRef.current) {
-								measureShadow()
-								shadowRef.current.style.transform = `translate(${boxes[dragging].x}px, ${shadowDropY}px)`
+								shadowRef.current.style.transform = `translate(${x - mdX}px, ${y - mdY}px)`
 							}
-							if (!mouseMoveTimeout || Math.abs(x - lastFrameDiffX) > 10 || Math.abs(y - lastFrameDiffY) > 10) {
-								if (mouseMoveTimeout) {
-									clearTimeout(mouseMoveTimeout)
-								}
-								mouseMoveTimeout = setTimeout(() => {
-									measureRealtime()
-									mouseMoveTimeout = undefined
-								}, 50);
-							}
+							measureFinal()
 						}
 					}
 				}}
@@ -214,6 +107,9 @@ export default function Board() {
 						)
 					})
 					if (keyOfBox) {
+						if (shadowRef.current) {
+							shadowRef.current.style.display = 'block';
+						}
 						const b = boxes[keyOfBox]
 						mdX = e.clientX - b.el.getBoundingClientRect().x + 32
 						mdY = e.clientY - b.el.getBoundingClientRect().y + 64
@@ -234,6 +130,9 @@ export default function Board() {
 						)
 					})
 					if (keyOfBox) {
+						if (shadowRef.current) {
+							shadowRef.current.style.display = 'block';
+						}
 						const b = boxes[keyOfBox]
 						mdX = e.clientX - b.el.getBoundingClientRect().x + 32
 						mdY = e.clientY - b.el.getBoundingClientRect().y + 64
@@ -242,9 +141,8 @@ export default function Board() {
 					}
 				}}
 				onTouchEnd={() => {
-					if (mouseMoveTimeout) {
-						clearTimeout(mouseMoveTimeout)
-						mouseMoveTimeout = undefined
+					if (shadowRef.current) {
+						shadowRef.current.style.display = 'none';
 					}
 					dragging = undefined
 					Object.keys(boxes).forEach((k: string) => {
@@ -254,9 +152,8 @@ export default function Board() {
 					setDragId(undefined)
 				}}
 				onMouseUp={() => {
-					if (mouseMoveTimeout) {
-						clearTimeout(mouseMoveTimeout)
-						mouseMoveTimeout = undefined
+					if (shadowRef.current) {
+						shadowRef.current.style.display = 'none';
 					}
 					dragging = undefined
 					Object.keys(boxes).forEach((k: string) => {
