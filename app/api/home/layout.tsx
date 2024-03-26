@@ -1,0 +1,62 @@
+"use client"
+
+import { setHomeCityScrollPos, setHomePeopleScrollPos, setHomeSettingsScrollPos } from "@/api/offline/backup";
+import HomeBottomNav, { selectedHomeSection } from "@/components/home/home-bottomnav";
+import HomeNavbar from "@/components/home/home-navbar";
+import { hookstate, useHookstate } from "@hookstate/core";
+import { Card, CircularProgress } from "@nextui-org/react";
+import { useEffect } from "react";
+
+const showLoading = hookstate(false);
+export const switchLoading = (v: boolean) => {
+	showLoading.set(v);
+}
+
+export default function HomeLayout({
+	children,
+}: Readonly<{
+	children: React.ReactNode;
+}>) {
+	const homeSectionState = useHookstate(selectedHomeSection);
+	const showLoadingState = useHookstate(showLoading);
+	useEffect(() => {
+		const scroller = () => {
+			switch (homeSectionState.get({ noproxy: true })) {
+				case 'people': {
+					setHomePeopleScrollPos(document.documentElement.scrollTop);
+					break;
+				}
+				case 'city': {
+					setHomeCityScrollPos(document.documentElement.scrollTop);
+					break;
+				}
+				case 'settings': {
+					setHomeSettingsScrollPos(document.documentElement.scrollTop);
+					break;
+				}
+			}
+		}
+		window.addEventListener('scroll', scroller);
+		return () => {
+			window.removeEventListener('scroll', scroller);
+		}
+	}, []);
+	return (
+		<div className="relative flex flex-col h-screen">
+			<main className="w-full h-full relative">
+				<HomeNavbar />
+				{children}
+				{
+					showLoadingState.get({ noproxy: true }) ? (
+						<Card shadow="none" radius="none" className="w-full h-full fixed left-0 top-0">
+							<Card className="w-24 h-24 fixed left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 items-center justify-center">
+								<CircularProgress />
+							</Card>
+						</Card>
+					) : null
+				}
+				<HomeBottomNav />
+			</main>
+		</div>
+	);
+}

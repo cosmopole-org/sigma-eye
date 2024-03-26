@@ -188,7 +188,7 @@ export const SearchIcon = (props: IconSvgProps) => (
 
 const icons: { [key: string]: any } = {
 	'project': (props: { color?: string, size?: number[] }) => {
-		const { color = '#000000', size = [24, 24] } = props;
+		const { color = 'currentColor', size = [24, 24] } = props;
 		return (
 			<svg
 				aria-hidden="true"
@@ -200,7 +200,7 @@ const icons: { [key: string]: any } = {
 		);
 	},
 	'apps': (props: { color?: string, size?: number[] }) => {
-		const { color = '#000000', size = [24, 24] } = props;
+		const { color = 'currentColor', size = [24, 24] } = props;
 		return (
 			<svg width={size[0]} height={size[1]} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<g clip-path="url(#clip0_610_4755)">
@@ -216,7 +216,7 @@ const icons: { [key: string]: any } = {
 		)
 	},
 	'files': (props: { color?: string, size?: number[] }) => {
-		const { color = '#000000', size = [24, 24] } = props;
+		const { color = 'currentColor', size = [24, 24] } = props;
 		return (
 			<svg width={size[0]} height={size[1]} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<path d="M4 3C2.897 3 2 3.897 2 5V19C2 20.103 2.897 21 4 21H20C21.103 21 22 20.103 22 19V5C22 3.897 21.103 3 20 3H4ZM4 5H20L20.002 19H4V5ZM6 7V9H13V7H6ZM15 7V9H18V7H15ZM6 11V13H13V11H6ZM15 11V13H18V11H15ZM13 15V17H18V15H13Z" fill={color} />
@@ -224,13 +224,13 @@ const icons: { [key: string]: any } = {
 		)
 	},
 	'tick': (props: { color?: string, size?: number[] }) => {
-		const { color = '#000000', size = [24, 24] } = props;
+		const { color = 'currentColor', size = [24, 24] } = props;
 		return (
 			<svg width={size[0]} height={size[1]} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title></title> <g id="Complete"> <g id="tick"> <polyline fill="none" points="3.7 14.3 9.6 19 20.3 5" stroke={color} stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></polyline> </g> </g> </g></svg>
 		)
 	},
 	'dropdown': (props: { color?: string, size?: number[] }) => {
-		const { color = '#000000', size = [24, 24] } = props;
+		const { color = 'currentColor', size = [24, 24] } = props;
 		return (
 			<svg width={size[0]} height={size[1]} viewBox="0 0 84 48" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<path d="M1.6258 1.63131C-0.541843 3.79895 -0.541843 7.29372 1.6258 9.46136L38.3873 46.2228C40.1125 47.9481 42.8995 47.9481 44.6248 46.2228L81.3862 9.46136C83.5539 7.29372 83.5539 3.79895 81.3862 1.63131C79.2186 -0.536338 75.7238 -0.536338 73.5562 1.63131L41.4839 33.6593L9.41162 1.58707C7.28822 -0.536339 3.74921 -0.536338 1.6258 1.63131V1.63131Z" fill={color} />
@@ -239,37 +239,37 @@ const icons: { [key: string]: any } = {
 		)
 	},
 	'more-horiz': (props: { color?: string, size?: number[] }) => {
-		const { color = '#000000', size = [24, 24] } = props;
+		const { color = 'currentColor', size = [24, 24] } = props;
 		return (
 			<svg width={size[0]} height={size[1]} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="18" cy="12" r="1.5" transform="rotate(90 18 12)" fill={color}></circle> <circle cx="12" cy="12" r="1.5" transform="rotate(90 12 12)" fill={color}></circle> <circle cx="6" cy="12" r="1.5" transform="rotate(90 6 12)" fill={color}></circle> </g></svg>
 		)
 	},
 	'code': (props: { color?: string, size?: number[] }) => {
-		const { color = '#000000', size = [24, 24] } = props;
+		const { color = 'currentColor', size = [24, 24] } = props;
 		return (
 			<svg width={size[0]} height={size[1]} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M7 8L3 11.6923L7 16M17 8L21 11.6923L17 16M14 4L10 20" stroke={color} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
 		)
 	},
 	'file-search': (props: { color?: string, size?: number[] }) => {
-		const { color = '#000000', size = [24, 24] } = props;
+		const { color = 'currentColor', size = [24, 24] } = props;
 		return (
 			<svg width={size[0]} height={size[1]} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M13 3H8.2C7.0799 3 6.51984 3 6.09202 3.21799C5.71569 3.40973 5.40973 3.71569 5.21799 4.09202C5 4.51984 5 5.0799 5 6.2V17.8C5 18.9201 5 19.4802 5.21799 19.908C5.40973 20.2843 5.71569 20.5903 6.09202 20.782C6.51984 21 7.0799 21 8.2 21H12M13 3L19 9M13 3V7.4C13 7.96005 13 8.24008 13.109 8.45399C13.2049 8.64215 13.3578 8.79513 13.546 8.89101C13.7599 9 14.0399 9 14.6 9H19M19 9V11M9 17H11M9 13H13M9 9H10M19.2686 19.2686L21 21M20 17.5C20 18.8807 18.8807 20 17.5 20C16.1193 20 15 18.8807 15 17.5C15 16.1193 16.1193 15 17.5 15C18.8807 15 20 16.1193 20 17.5Z" stroke={color} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
 		)
 	},
 	'file-data': (props: { color?: string, size?: number[] }) => {
-		const { color = '#000000', size = [24, 24] } = props;
+		const { color = 'currentColor', size = [24, 24] } = props;
 		return (
 			<svg width={size[0]} height={size[1]} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M2 12C2 15.7712 2 17.6569 3.17157 18.8284C4.34315 20 6.22876 20 10 20H14C17.7712 20 19.6569 20 20.8284 18.8284C22 17.6569 22 15.7712 22 12C22 8.22876 22 6.34315 20.8284 5.17157C19.6569 4 17.7712 4 14 4H10C6.22876 4 4.34315 4 3.17157 5.17157C2.51839 5.82475 2.22937 6.69989 2.10149 8" stroke={color} stroke-width="1.5" stroke-linecap="round"></path> <path d="M10 16H6" stroke={color} stroke-width="1.5" stroke-linecap="round"></path> <path d="M14 13H18" stroke={color} stroke-width="1.5" stroke-linecap="round"></path> <path d="M14 16H12.5" stroke={color} stroke-width="1.5" stroke-linecap="round"></path> <path d="M9.5 13H11.5" stroke={color} stroke-width="1.5" stroke-linecap="round"></path> <path d="M18 16H16.5" stroke={color} stroke-width="1.5" stroke-linecap="round"></path> <path d="M6 13H7" stroke={color} stroke-width="1.5" stroke-linecap="round"></path> </g></svg>
 		)
 	},
 	'add': (props: { color?: string, size?: number[] }) => {
-		const { color = '#000000', size = [24, 24] } = props;
+		const { color = 'currentColor', size = [24, 24] } = props;
 		return (
 			<svg width={size[0]} height={size[1]} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M11.25 12.75V18H12.75V12.75H18V11.25H12.75V6H11.25V11.25H6V12.75H11.25Z" fill={color}></path> </g></svg>
 		)
 	},
 	'back': (props: { color?: string, size?: number[] }) => {
-		let { color = '#000000', size = [24, 24] } = props;
+		let { color = 'currentColor', size = [24, 24] } = props;
 		const { theme } = useTheme()
 		color = theme === 'light' ? '#000' : '#fff'
 		return (
@@ -386,6 +386,46 @@ const icons: { [key: string]: any } = {
 			{...props}
 		>
 			<g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="m1.75 9.75 2.5 2.5m3.5-4 2.5-2.5m-4.5 4 2.5 2.5 6-6.5"></path> </g>
+		</svg>
+	),
+	'notification': ({ size = [24, 24], color = "currentColor", ...props }: any) => (
+		<svg
+			viewBox="0 0 24 24"
+			xmlns="http://www.w3.org/2000/svg"
+			version="1.1"
+			fill="none"
+			stroke={color}
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			stroke-width="1.5"
+			aria-hidden="true"
+			focusable="false"
+			height={size[1]}
+			role="presentation"
+			width={size[0]}
+			{...props}
+		>
+			<g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12.02 2.90991C8.70997 2.90991 6.01997 5.59991 6.01997 8.90991V11.7999C6.01997 12.4099 5.75997 13.3399 5.44997 13.8599L4.29997 15.7699C3.58997 16.9499 4.07997 18.2599 5.37997 18.6999C9.68997 20.1399 14.34 20.1399 18.65 18.6999C19.86 18.2999 20.39 16.8699 19.73 15.7699L18.58 13.8599C18.28 13.3399 18.02 12.4099 18.02 11.7999V8.90991C18.02 5.60991 15.32 2.90991 12.02 2.90991Z" stroke={color} stroke-width="2" stroke-miterlimit="10" stroke-linecap="round"></path> <path d="M13.87 3.19994C13.56 3.10994 13.24 3.03994 12.91 2.99994C11.95 2.87994 11.03 2.94994 10.17 3.19994C10.46 2.45994 11.18 1.93994 12.02 1.93994C12.86 1.93994 13.58 2.45994 13.87 3.19994Z" stroke={color} stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M15.02 19.0601C15.02 20.7101 13.67 22.0601 12.02 22.0601C11.2 22.0601 10.44 21.7201 9.90002 21.1801C9.36002 20.6401 9.02002 19.8801 9.02002 19.0601" fill="#fff" stroke={color} stroke-width="2" stroke-miterlimit="10"></path> </g>
+		</svg>
+	),
+	'invite': ({ size = [24, 24], color = "currentColor", ...props }: any) => (
+		<svg
+			viewBox="0 0 24 24"
+			xmlns="http://www.w3.org/2000/svg"
+			version="1.1"
+			fill="none"
+			stroke={color}
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			stroke-width="1.5"
+			aria-hidden="true"
+			focusable="false"
+			height={size[1]}
+			role="presentation"
+			width={size[0]}
+			{...props}
+		>
+			<g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>invite_fill</title> <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Contact" transform="translate(-864.000000, -48.000000)" fill-rule="nonzero"> <g id="invite_fill" transform="translate(864.000000, 48.000000)"> <path d="M24,0 L24,24 L0,24 L0,0 L24,0 Z M12.5934901,23.257841 L12.5819402,23.2595131 L12.5108777,23.2950439 L12.4918791,23.2987469 L12.4918791,23.2987469 L12.4767152,23.2950439 L12.4056548,23.2595131 C12.3958229,23.2563662 12.3870493,23.2590235 12.3821421,23.2649074 L12.3780323,23.275831 L12.360941,23.7031097 L12.3658947,23.7234994 L12.3769048,23.7357139 L12.4804777,23.8096931 L12.4953491,23.8136134 L12.4953491,23.8136134 L12.5071152,23.8096931 L12.6106902,23.7357139 L12.6232938,23.7196733 L12.6232938,23.7196733 L12.6266527,23.7031097 L12.609561,23.275831 C12.6075724,23.2657013 12.6010112,23.2592993 12.5934901,23.257841 L12.5934901,23.257841 Z M12.8583906,23.1452862 L12.8445485,23.1473072 L12.6598443,23.2396597 L12.6498822,23.2499052 L12.6498822,23.2499052 L12.6471943,23.2611114 L12.6650943,23.6906389 L12.6699349,23.7034178 L12.6699349,23.7034178 L12.678386,23.7104931 L12.8793402,23.8032389 C12.8914285,23.8068999 12.9022333,23.8029875 12.9078286,23.7952264 L12.9118235,23.7811639 L12.8776777,23.1665331 C12.8752882,23.1545897 12.8674102,23.1470016 12.8583906,23.1452862 L12.8583906,23.1452862 Z M12.1430473,23.1473072 C12.1332178,23.1423925 12.1221763,23.1452606 12.1156365,23.1525954 L12.1099173,23.1665331 L12.0757714,23.7811639 C12.0751323,23.7926639 12.0828099,23.8018602 12.0926481,23.8045676 L12.108256,23.8032389 L12.3092106,23.7104931 L12.3186497,23.7024347 L12.3186497,23.7024347 L12.3225043,23.6906389 L12.340401,23.2611114 L12.337245,23.2485176 L12.337245,23.2485176 L12.3277531,23.2396597 L12.1430473,23.1473072 Z" id="MingCute" fill-rule="nonzero"> </path> <path d="M17,3 C18.597725,3 19.903664,4.24892392 19.9949075,5.82372764 L20,6 L20,10.3501 L20.5939,10.0862 C21.2076,9.813435 21.9162954,10.2366962 21.9931452,10.8836127 L22,11 L22,19 C22,20.0543909 21.18415,20.9181678 20.1492661,20.9945144 L20,21 L4,21 C2.94563773,21 2.08183483,20.18415 2.00548573,19.1492661 L2,19 L2,11 C2,10.3284056 2.6746366,9.85267997 3.29700147,10.045194 L3.40614,10.0862 L4,10.3501 L4,6 C4,4.40232321 5.24892392,3.09633941 6.82372764,3.00509271 L7,3 L17,3 Z M17,5 L7,5 C6.44772,5 6,5.44772 6,6 L6,11.239 L12,13.9057 L18,11.239 L18,6 C18,5.44772 17.5523,5 17,5 Z M12,8 C12.5523,8 13,8.44772 13,9 C13,9.51283143 12.613973,9.93550653 12.1166239,9.9932722 L12,10 L10,10 C9.44772,10 9,9.55228 9,9 C9,8.48716857 9.38604429,8.06449347 9.88337975,8.0067278 L10,8 L12,8 Z" id="形状" fill={color}> </path> </g> </g> </g> </g>
 		</svg>
 	)
 }

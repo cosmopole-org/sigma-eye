@@ -3,6 +3,8 @@
 import { Card } from "@nextui-org/react";
 import { BottomNavItem } from "../elements/bottomnav-item";
 import { hookstate, useHookstate } from "@hookstate/core";
+import { useRouter } from "next/navigation";
+import { switchLoading } from "@/app/api/home/layout";
 
 export const selectedHomeSection = hookstate("city");
 export const switchHomeSection = (s: string) => {
@@ -11,7 +13,12 @@ export const switchHomeSection = (s: string) => {
 
 export default function HomeBottomNav() {
     const selectedState = useHookstate(selectedHomeSection);
-    const onItemClick = (key: string) => () => selectedState.set(key);
+    const router = useRouter();
+    const onItemClick = (key: string) => () => {
+        selectedState.set(key);
+        switchLoading(true);
+        router.push(key);
+    }
     return (
         <Card isBlurred className="grid grid-cols-3 fixed bottom-0 left-0 w-full h-[72px] pt-1" style={{ borderRadius: '24px 24px 0px 0px' }}>
             <BottomNavItem itemKey="people" selected={selectedState.get({ noproxy: true })} title="People" icon="gallery" onClick={onItemClick('people')} />

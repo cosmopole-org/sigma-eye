@@ -29,7 +29,7 @@ export default function HomeMenu() {
                             key="delete1"
                             className="pl-0 text-left bg-transparent"
                         >
-                            <Icon name="add" color={'#fff'} />
+                            <Icon name="add" />
                             Delete file
                             <div className="flex-1" />
                         </Button>
@@ -37,7 +37,7 @@ export default function HomeMenu() {
                             key="delete2"
                             className="pl-0 text-left bg-transparent"
                         >
-                            <Icon name="add" color={'#fff'} />
+                            <Icon name="add" />
                             Delete file
                             <div className="flex-1" />
                         </Button>
@@ -45,7 +45,7 @@ export default function HomeMenu() {
                             key="delete3"
                             className="pl-0 text-left bg-transparent"
                         >
-                            <Icon name="add" color={'#fff'} />
+                            <Icon name="add" />
                             Delete file
                             <div className="flex-1" />
                         </Button>
