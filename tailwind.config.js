@@ -14,6 +14,8 @@ module.exports = {
       current: 'currentColor',
       'accent': '#581c87',
       'white': '#ffffff',
+      's-white': '#e6e6e6',
+      's-black': '#2f2f2f',
       'passive': '#888888',
       'message': '#bbf',
       'link': '#08f'

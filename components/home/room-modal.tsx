@@ -1,6 +1,5 @@
 import Board from "@/app/page";
-import { Modal, ModalBody, ModalContent, ModalHeader, Tab, Tabs } from "@nextui-org/react";
-import Icon from "../elements/icon";
+import { Modal, ModalBody, ModalContent, ModalHeader } from "@nextui-org/react";
 import { hookstate, useHookstate } from "@hookstate/core";
 import RoomBottomNav from "./room-bottomnav";
 

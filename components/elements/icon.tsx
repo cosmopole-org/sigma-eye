@@ -13,7 +13,7 @@ export default function Icon({ name, color, size = [24, 24], iconType, className
         IconComp = <Image width={size[0]} height={size[1]} alt={'icon'} src={getSvgIconPath(name)} className={iconType === 'circle' ? undefined : className} />;
     }
     if (iconType === 'circle') {
-        return <Card shadow="none" className={"rounded-3xl p-2 w-auto h-auto bg-white " + (className ?? "")} style={{ minWidth: 8 + size[0], minHeight: 8 + size[1] }}>{IconComp}</Card>
+        return <Card shadow="none" className={"rounded-3xl w-auto h-auto bg-s-white dark:bg-s-black items-center justify-center " + (className ?? "")} style={{ minWidth: 8 + size[0], minHeight: 8 + size[1] }}>{IconComp}</Card>
     } else {
         return IconComp
     }
