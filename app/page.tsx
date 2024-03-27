@@ -1,5 +1,6 @@
 "use client"
 
+import { Card } from "@nextui-org/react";
 import React, { MouseEvent, useEffect, useRef, useState } from "react";
 
 type Box = { el: HTMLDivElement | any, key: string, x: number, y: number, w: number, h: number, color: string, oldY: number }
@@ -44,19 +45,23 @@ const measureFinal = () => {
 	})
 }
 
-export default function Board() {
+export default function Board({ scrolled }: Readonly<{ scrolled: (v: number) => void }>) {
 	const [dragId, setDragId] = useState<string | undefined>(undefined);
 	const shadowRef = useRef<HTMLDivElement>(null);
 	useEffect(() => {
 		Object.keys(boxes).forEach((k: string) => {
 			boxes[k].el = (document.getElementById(k) as HTMLDivElement);
 		})
+		return () => {
+			x = 0
+			y = 0
+		}
 	}, []);
 	return (
 		<div className="w-full h-auto relative overlow-hidden">
 			{
 				Object.keys(boxes).map((k: string) => (
-					<div
+					<Card
 						id={k}
 						style={{ border: dragId === k ? '2px solid #fff' : undefined, transition: dragging === k ? undefined : 'transform 100ms', backgroundColor: dragging === k ? '#fff' : boxes[k].color, width: 150, height: 150, transform: `translate(${boxes[k].x}px, ${boxes[k].y}px)`, position: 'absolute', left: 0, top: 0 }}
 					/>
@@ -83,9 +88,10 @@ export default function Board() {
 					}
 				}}
 				onTouchMove={e => {
+					let oldY = y;
+					x = e.touches[0].clientX;
+					y = e.touches[0].clientY;
 					if (dragging) {
-						x = e.touches[0].clientX;
-						y = e.touches[0].clientY;
 						if (boxes[dragging]?.el) {
 							boxes[dragging].x = x - mdX
 							boxes[dragging].y = y - mdY
@@ -95,7 +101,7 @@ export default function Board() {
 							measureFinal()
 						}
 					} else {
-
+						scrolled(oldY - y);
 					}
 				}}
 				onContextMenu={e => {
@@ -117,8 +123,8 @@ export default function Board() {
 							shadowRef.current.style.display = 'block';
 						}
 						const b = boxes[keyOfBox]
-						mdX = e.clientX - b.el.getBoundingClientRect().x + 32
-						mdY = e.clientY - b.el.getBoundingClientRect().y + 64
+						mdX = e.clientX - b.el.getBoundingClientRect().x + 16
+						mdY = e.clientY - b.el.getBoundingClientRect().y + 300
 						dragging = keyOfBox
 						setDragId(keyOfBox)
 					}
@@ -140,8 +146,8 @@ export default function Board() {
 							shadowRef.current.style.display = 'block';
 						}
 						const b = boxes[keyOfBox]
-						mdX = e.clientX - b.el.getBoundingClientRect().x + 32
-						mdY = e.clientY - b.el.getBoundingClientRect().y + 64
+						mdX = e.clientX - b.el.getBoundingClientRect().x + 16
+						mdY = e.clientY - b.el.getBoundingClientRect().y + 300
 						dragging = keyOfBox
 						setDragId(keyOfBox)
 					}
