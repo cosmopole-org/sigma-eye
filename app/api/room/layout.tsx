@@ -2,21 +2,12 @@
 
 import { setHomeCityScrollPos, setHomePeopleScrollPos, setHomeSettingsScrollPos } from "@/api/offline/backup";
 import RoomBottomNav, { selectedRoomSection } from "@/components/home/room-bottomnav";
-import { hookstate, useHookstate } from "@hookstate/core";
+import { useHookstate } from "@hookstate/core";
 import { Card, CircularProgress } from "@nextui-org/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import City from "../home/city/page";
 import HomeBottomNav from "@/components/home/home-bottomnav";
-
-const showRoomLoading = hookstate(true);
-export const switchRoomLoading = (v: boolean) => {
-	showRoomLoading.set(v);
-}
-
-const roomSliderView = hookstate(false);
-export const swtichRoomSlider = (v: boolean) => {
-	roomSliderView.set(v);
-}
+import { roomSliderView, showRoomLoading } from '../../../api/offline/states';
 
 export default function RoomLayout({
 	children,

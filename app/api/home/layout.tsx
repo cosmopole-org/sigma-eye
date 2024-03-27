@@ -1,15 +1,11 @@
 "use client"
 
 import { setHomeCityScrollPos, setHomePeopleScrollPos, setHomeSettingsScrollPos } from "@/api/offline/backup";
+import { showRoomLoading } from "@/api/offline/states";
 import HomeBottomNav, { selectedHomeSection } from "@/components/home/home-bottomnav";
-import { hookstate, useHookstate } from "@hookstate/core";
+import { useHookstate } from "@hookstate/core";
 import { Card, CircularProgress } from "@nextui-org/react";
 import { useEffect } from "react";
-
-const showLoading = hookstate(true);
-export const switchLoading = (v: boolean) => {
-	showLoading.set(v);
-}
 
 export default function HomeLayout({
 	children,
@@ -17,7 +13,7 @@ export default function HomeLayout({
 	children: React.ReactNode;
 }>) {
 	const homeSectionState = useHookstate(selectedHomeSection);
-	const showLoadingState = useHookstate(showLoading);
+	const showLoadingState = useHookstate(showRoomLoading);
 	useEffect(() => {
 		const scroller = () => {
 			switch (homeSectionState.get({ noproxy: true })) {

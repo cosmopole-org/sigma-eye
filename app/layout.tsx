@@ -4,18 +4,12 @@ import "@/styles/globals.css";
 import { fontSans } from "@/config/fonts";
 import { Providers } from "./providers";
 import clsx from "clsx";
-import { hookstate, useHookstate } from "@hookstate/core";
+import { useHookstate } from "@hookstate/core";
 import { Card, CircularProgress } from "@nextui-org/react";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { switchLoading } from "./api/home/layout";
 import { getHomeCityScrollPos, getHomePeopleScrollPos, getHomeSettingsScrollPos, getRoomBoardScrollPos } from "@/api/offline/backup";
-import { switchRoomLoading } from "./api/room/layout";
-
-const showMainLoading = hookstate(false);
-export const switchMainLoading = (v: boolean) => {
-	showMainLoading.set(v);
-}
+import { showMainLoading, switchLoading, switchMainLoading, switchRoomLoading } from "../api/offline/states";
 
 export default function RootLayout({
 	children,
