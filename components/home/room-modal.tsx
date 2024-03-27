@@ -1,9 +1,9 @@
-import Board from "@/app/page";
+import Board from "../elements/board";
 import { Card, Image } from "@nextui-org/react";
 import { hookstate } from "@hookstate/core";
 import IconButton from "../elements/icon-button";
 import { useRouter } from "next/navigation";
-import { swtichRoomSlider } from "@/app/api/room/layout";
+import { swtichRoomSlider } from "../../api/offline/states";
 import { getUsers } from "@/api/offline/constants";
 import { useRef } from "react";
 

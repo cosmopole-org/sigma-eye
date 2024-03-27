@@ -4,7 +4,7 @@ import { Card } from "@nextui-org/react";
 import { BottomNavItem } from "../elements/bottomnav-item";
 import { hookstate, useHookstate } from "@hookstate/core";
 import { useRouter } from "next/navigation";
-import { switchLoading } from "@/app/api/home/layout";
+import { switchLoading } from "../../api/offline/states";
 
 export const selectedHomeSection = hookstate("city");
 export const switchHomeSection = (s: string) => {
