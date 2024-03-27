@@ -7,7 +7,10 @@ type Box = { el: HTMLDivElement | any, key: string, x: number, y: number, w: num
 let boxes: { [id: string]: Box } = {
 	red: { el: null, key: 'red', x: 0, y: 0, w: 150, h: 150, color: 'red', oldY: 0 },
 	green: { el: null, key: 'green', x: 0, y: 150, w: 150, h: 150, color: 'green', oldY: 150 },
-	blue: { el: null, key: 'blue', x: 0, y: 300, w: 150, h: 150, color: 'blue', oldY: 300 }
+	blue: { el: null, key: 'blue', x: 0, y: 300, w: 150, h: 150, color: 'blue', oldY: 300 },
+	red2: { el: null, key: 'red', x: 0, y: 450, w: 150, h: 150, color: 'red', oldY: 450 },
+	green2: { el: null, key: 'green', x: 0, y: 600, w: 150, h: 150, color: 'green', oldY: 600 },
+	blue2: { el: null, key: 'blue', x: 0, y: 750, w: 150, h: 150, color: 'blue', oldY: 750 }
 }
 let dragging: string | undefined = undefined;
 let mdX = 0, mdY = 0
@@ -50,7 +53,7 @@ export default function Board() {
 		})
 	}, []);
 	return (
-		<div className="w-full h-full relative overlow-hidden">
+		<div className="w-full h-auto relative overlow-hidden">
 			{
 				Object.keys(boxes).map((k: string) => (
 					<div
@@ -64,7 +67,7 @@ export default function Board() {
 				style={{ display: 'none', backgroundColor: dragging ? boxes[dragging].color : 'transparent', width: 150, height: 150, transform: `translate(${x - mdX}px, ${y - mdY}px)`, position: 'absolute', left: 0, top: 0 }}
 			/>
 			<div
-				className="w-full h-full absolute left-0 top-0"
+				className="w-full h-screen fixed left-0 top-14"
 				onMouseMove={(e: MouseEvent<HTMLDivElement>) => {
 					if (dragging) {
 						x = e.clientX;
@@ -91,9 +94,12 @@ export default function Board() {
 							}
 							measureFinal()
 						}
+					} else {
+
 					}
 				}}
 				onContextMenu={e => {
+					e.stopPropagation()
 					e.preventDefault()
 					x = e.clientX
 					y = e.clientY

@@ -1,3 +1,5 @@
+"use client"
+
 import { Tab, Tabs } from "@nextui-org/react";
 import Icon from "../elements/icon";
 

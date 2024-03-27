@@ -1,48 +1,61 @@
 "use client"
 
 import { setHomeCityScrollPos, setHomePeopleScrollPos, setHomeSettingsScrollPos } from "@/api/offline/backup";
-import HomeBottomNav, { selectedHomeSection } from "@/components/home/home-bottomnav";
+import RoomBottomNav, { selectedRoomSection } from "@/components/home/room-bottomnav";
 import { hookstate, useHookstate } from "@hookstate/core";
 import { Card, CircularProgress } from "@nextui-org/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import City from "../home/city/page";
+import HomeBottomNav from "@/components/home/home-bottomnav";
 
-const showLoading = hookstate(true);
-export const switchLoading = (v: boolean) => {
-	showLoading.set(v);
+const showRoomLoading = hookstate(true);
+export const switchRoomLoading = (v: boolean) => {
+	showRoomLoading.set(v);
 }
 
-export default function HomeLayout({
+const roomSliderView = hookstate(false);
+export const swtichRoomSlider = (v: boolean) => {
+	roomSliderView.set(v);
+}
+
+export default function RoomLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	const homeSectionState = useHookstate(selectedHomeSection);
-	const showLoadingState = useHookstate(showLoading);
+	const roomSectionState = useHookstate(selectedRoomSection);
+	const showLoadingState = useHookstate(showRoomLoading);
+	const open = useHookstate(roomSliderView);
 	useEffect(() => {
 		const scroller = () => {
-			switch (homeSectionState.get({ noproxy: true })) {
-				case 'people': {
+			switch (roomSectionState.get({ noproxy: true })) {
+				case 'board': {
 					setHomePeopleScrollPos(document.documentElement.scrollTop);
 					break;
 				}
-				case 'city': {
+				case 'chat': {
 					setHomeCityScrollPos(document.documentElement.scrollTop);
 					break;
 				}
-				case 'settings': {
+				case 'files': {
 					setHomeSettingsScrollPos(document.documentElement.scrollTop);
 					break;
 				}
 			}
 		}
 		window.addEventListener('scroll', scroller);
+		open.set(true);
 		return () => {
 			window.removeEventListener('scroll', scroller);
 		}
 	}, []);
 	return (
-		<div className="relative flex flex-col h-screen">
-			<main className="w-full h-full relative">
+		<div className="relative flex flex-col h-screen overflow-hidden">
+			<div className="w-full h-full fixed top-0 left-0">
+				<City />
+				<HomeBottomNav />
+			</div>
+			<main className="w-full h-full relative" style={{ transition: 'transform 250ms', transform: open.get({ noproxy: true }) ? 'translateX(0px)' : 'translateX(400px)' }}>
 				{children}
 				{
 					showLoadingState.get({ noproxy: true }) ? (
@@ -53,7 +66,7 @@ export default function HomeLayout({
 						</Card>
 					) : null
 				}
-				<HomeBottomNav />
+				<RoomBottomNav />
 			</main>
 		</div>
 	);

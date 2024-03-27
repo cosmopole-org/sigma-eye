@@ -1,11 +1,12 @@
 "use client"
 
 import { getUsers } from "@/api/offline/constants"
-import { Avatar, Card } from "@nextui-org/react"
+import { Card } from "@nextui-org/react"
 import { roomsListView, switchRoomsList } from "./home-rooms-list"
 import Icon from "../elements/icon"
 import { useTheme } from "next-themes"
 import { useHookstate } from "@hookstate/core"
+import Image from "next/image"
 
 export default function HomeTowersList() {
     const { theme } = useTheme();
@@ -36,7 +37,7 @@ export default function HomeTowersList() {
                         }
                     } className="mt-4 m-h-16 w-full bg-transparent" key={item.id} isPressable shadow="none">
                         <div className="flex gap-2 w-full">
-                            <Avatar alt={item.name} className="w-[68px]" size="lg" src={item.avatar} />
+                            <Image width={68} height={68} alt={item.name} className="w-[68px] rounded-3xl" src={item.avatar} />
                             <div className="flex flex-col relative w-full">
                                 <span className="text-lg text-left">{item.name}</span>
                                 <span className="text-md text-default-400 text-left">No messsages exist in home...</span>

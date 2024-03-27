@@ -17,7 +17,7 @@ export default function HomeBottomNav() {
     const onItemClick = (key: string) => () => {
         selectedState.set(key);
         switchLoading(true);
-        router.push(key);
+        router.push('/api/home/' + key);
     }
     return (
         <Card isBlurred className="grid grid-cols-3 fixed bottom-0 left-0 w-full h-[72px] pt-1" style={{ borderRadius: '24px 24px 0px 0px', zIndex: 100 }}>

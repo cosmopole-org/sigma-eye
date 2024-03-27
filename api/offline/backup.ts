@@ -23,3 +23,11 @@ export const setHomeSettingsScrollPos = (p: number) => {
 export const getHomeSettingsScrollPos = () => {
     return homeSettingsScrollPos;
 }
+
+let roomBoardScrollPos = 0;
+export const setRoomBoardScrollPos = (p: number) => {
+    roomBoardScrollPos = p;
+}
+export const getRoomBoardScrollPos = () => {
+    return roomBoardScrollPos;
+}
