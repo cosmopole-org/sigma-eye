@@ -7,6 +7,7 @@ import HomeTowersList from "@/components/home/home-towers-list";
 import { getHomeCityScrollPos } from "@/api/offline/backup";
 import { switchLoading } from "../layout";
 import HomeRoomsList from "@/components/home/home-rooms-list";
+import HomeNavbar from "@/components/home/home-navbar";
 
 export default function City() {
     useEffect(() => {
@@ -14,7 +15,8 @@ export default function City() {
         switchLoading(false)
     }, [])
     return (
-        <div className="w-full h-full">
+        <div className="w-full relative">
+            <HomeNavbar />
             <HomeTowersList />
             <HomeRoomsList />
             <HomeFolders secondary />

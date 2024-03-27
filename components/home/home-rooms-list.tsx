@@ -13,8 +13,8 @@ export const switchRoomsList = (v: boolean) => {
 export default function HomeRoomsList() {
     const roomsListState = useHookstate(roomsListView);
     return (
-        <Card className="fixed top-[164px] h-full" style={{
-            width: 'calc(100% - 78px)', height: 'calc(100% - 176px)', borderRadius: '24px 0px 0px 0px', right: 0,
+        <Card className="fixed top-[172px]" style={{
+            width: 'calc(100% - 78px)', height: 'calc(100% - 184px)', borderRadius: '24px 0px 0px 0px', right: 0,
             transition: 'transform 250ms', transform: roomsListState.get({ noproxy: true }) ? 'translateX(0px)' : 'translateX(+100%)'
         }}>
             <Card radius="none" className="h-10">

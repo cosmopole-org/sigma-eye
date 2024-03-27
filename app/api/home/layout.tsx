@@ -2,7 +2,6 @@
 
 import { setHomeCityScrollPos, setHomePeopleScrollPos, setHomeSettingsScrollPos } from "@/api/offline/backup";
 import HomeBottomNav, { selectedHomeSection } from "@/components/home/home-bottomnav";
-import HomeNavbar from "@/components/home/home-navbar";
 import { hookstate, useHookstate } from "@hookstate/core";
 import { Card, CircularProgress } from "@nextui-org/react";
 import { useEffect } from "react";
@@ -44,11 +43,10 @@ export default function HomeLayout({
 	return (
 		<div className="relative flex flex-col h-screen">
 			<main className="w-full h-full relative">
-				<HomeNavbar />
 				{children}
 				{
 					showLoadingState.get({ noproxy: true }) ? (
-						<Card shadow="none" radius="none" className="w-full h-full fixed left-0 top-0">
+						<Card shadow="none" radius="none" className="w-full h-full fixed left-0 top-0" style={{ zIndex: 99 }}>
 							<Card className="w-24 h-24 fixed left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 items-center justify-center">
 								<CircularProgress />
 							</Card>

@@ -13,11 +13,16 @@ export default function HomeNavbar() {
     const roomsListState = useHookstate(roomsListView);
     const homeSectionState = useHookstate(selectedHomeSection);
     return (
-        <Navbar shouldHideOnScroll={!roomsListState.get({ noproxy: true })} className={(homeSectionState.get({ noproxy: true }) === "city" ? "h-[166px]" : "h-[124px]")} isBordered>
-            <NavbarContent as="div" className={(homeSectionState.get({ noproxy: true }) === 'city' ? "h-[166px]" : "h-[124px]") + " items-center w-full relative"} justify="start">
-                <div className="top-5 w-full absolute">
+        <Navbar
+            shouldHideOnScroll={!roomsListState.get({ noproxy: true }) || (homeSectionState.get({ noproxy: true }) !== 'city')}
+            isBordered
+            className={((!roomsListState.get({ noproxy: true }) || (homeSectionState.get({ noproxy: true }) !== 'city')) ? undefined : 'fixed') + " " + (homeSectionState.get({ noproxy: true }) === 'city' ? "h-[172px]" : "h-[128px]")}
+        >
+            <NavbarContent as="div" className={"items-center w-full " + (homeSectionState.get({ noproxy: true }) === 'city' ? "h-[172px]" : "h-[128px]")} justify="center">
+                <div className={"w-full"} style={{ paddingTop: (homeSectionState.get({ noproxy: true }) === 'city' ? 20 : 0) }}>
                     <div className="flex pl-1">
                         <HomeMenu />
+
                         <p className="text-xl flex-1 text-center">
                             Sigma
                         </p>
