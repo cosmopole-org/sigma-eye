@@ -5,8 +5,6 @@ import IconButton from "../elements/icon-button"
 import { getUsers } from "@/api/offline/constants"
 import { hookstate, useHookstate } from "@hookstate/core"
 import { useRouter } from "next/navigation"
-import { switchRoomLoading } from "@/app/api/room/layout"
-import { switchMainLoading } from "@/app/layout"
 
 export const roomsListView = hookstate(false);
 export const switchRoomsList = (v: boolean) => {
@@ -35,8 +33,6 @@ export default function HomeRoomsList() {
             >
                 {getUsers().map(item => (
                     <Card onClick={() => {
-                        switchMainLoading(true);
-                        switchRoomLoading(true);
                         router.push('/api/room/board')
                     }} className="mt-4 m-h-16 w-full bg-transparent" key={item.id} isPressable shadow="none">
                         <div className="flex gap-2 w-full">

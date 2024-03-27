@@ -4,7 +4,7 @@ import { Card } from "@nextui-org/react";
 import { BottomNavItem } from "../elements/bottomnav-item";
 import { hookstate, useHookstate } from "@hookstate/core";
 import { useRouter } from "next/navigation";
-import { switchRoomLoading } from "@/app/api/room/layout";
+import { switchRoomLoading } from "../../api/offline/states";
 
 export const selectedRoomSection = hookstate("board");
 export const switchHomeSection = (s: string) => {
