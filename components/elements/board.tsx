@@ -45,136 +45,179 @@ const measureFinal = () => {
     })
 }
 
-export default function Board({ scrolled }: Readonly<{ scrolled: (v: number) => void }>) {
+let initialPosX = 0, initialPosY = 0, relPosX = -1, relPosY = -1;
+
+
+function isTouchDevice() {
+    return (('ontouchstart' in window) ||
+        (navigator.maxTouchPoints > 0) ||
+        ((navigator as any).msMaxTouchPoints > 0));
+}
+
+export default function Board({ scrolled, changeScrollLock, getSCrollY }: Readonly<{ changeScrollLock: (v: boolean) => void, scrolled: (v: number) => void, getSCrollY: () => number }>) {
+    const getOffset = () => (300 - getSCrollY())
     const [dragId, setDragId] = useState<string | undefined>(undefined);
+    const updateDragging = (v: string | undefined) => {
+        changeScrollLock(v !== undefined);
+        setDragId(v);
+    }
     const shadowRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
         Object.keys(boxes).forEach((k: string) => {
             boxes[k].el = (document.getElementById(k) as HTMLDivElement);
         })
-        return () => {
-            x = 0
-            y = 0
-        }
     }, []);
-    return (
-        <div className="w-full h-auto relative overlow-hidden">
-            {
-                Object.keys(boxes).map((k: string) => (
-                    <Card
-                        id={k}
-                        style={{ border: dragId === k ? '2px solid #fff' : undefined, transition: dragging === k ? undefined : 'transform 100ms', backgroundColor: dragging === k ? '#fff' : boxes[k].color, width: 150, height: 150, transform: `translate(${boxes[k].x}px, ${boxes[k].y}px)`, position: 'absolute', left: 0, top: 0 }}
-                    />
-                ))
-            }
-            <div
-                ref={shadowRef}
-                style={{ display: 'none', backgroundColor: dragging ? boxes[dragging].color : 'transparent', width: 150, height: 150, transform: `translate(${x - mdX}px, ${y - mdY}px)`, position: 'absolute', left: 0, top: 0 }}
-            />
-            <div
-                className="w-full h-screen fixed left-0 top-14"
-                onMouseMove={(e: MouseEvent<HTMLDivElement>) => {
-                    if (dragging) {
-                        x = e.clientX;
-                        y = e.clientY;
-                        if (boxes[dragging]?.el) {
-                            boxes[dragging].x = x - mdX
-                            boxes[dragging].y = y - mdY
+    if (isTouchDevice()) {
+        return (
+            <div className="w-full h-[1000px] absolute overlow-hidden">
+                {
+                    Object.keys(boxes).map((k: string) => (
+                        <div
+                            id={k}
+                            style={{ border: dragId === k ? '2px solid #fff' : undefined, backgroundColor: dragging === k ? 'transparent' : boxes[k].color, width: 150, height: 150, transform: `translate(${boxes[k].x}px, ${boxes[k].y}px)`, position: 'absolute', left: 0, top: 0 }}
+                            onContextMenu={e => {
+                                e.preventDefault();
+                                mdX = e.clientX - 16;
+                                mdY = e.clientY - getOffset();
+                                const b = boxes[k]
+                                if (shadowRef.current) {
+                                    shadowRef.current.style.backgroundColor = b.color;
+                                    shadowRef.current.style.display = 'block';
+                                }
+                                initialPosX = b.el.getBoundingClientRect().x - 16;
+                                initialPosY = b.el.getBoundingClientRect().y - getOffset();
+                                mdX = e.clientX;
+                                mdY = e.clientY;
+                                relPosX = mdX - b.x - 16;
+                                relPosY = mdY - b.y - getOffset();
+                                dragging = k
+                                updateDragging(k)
+                            }}
+                            onTouchMove={e => {
+                                const clientX = e.touches[0].clientX;
+                                const clientY = e.touches[0].clientY;
+                                const b = boxes[k];
+                                b.x = clientX - mdX + initialPosX;
+                                b.y = clientY - mdY + initialPosY;
+                                if (shadowRef.current) {
+                                    shadowRef.current.style.transform = `translate(${clientX - (relPosX >= 0 ? relPosX : 25) - 16}px, ${clientY - (relPosY >= 0 ? relPosY : 25) - getOffset()}px)`;
+                                }
+                                measureFinal()
+                            }}
+                            onTouchEnd={() => {
+                                if (shadowRef.current) {
+                                    shadowRef.current.style.display = 'none';
+                                    shadowRef.current.style.backgroundColor = 'transparent';
+                                }
+                                relPosX = -1;
+                                relPosY = -1;
+                                dragging = undefined
+                                Object.keys(boxes).forEach((k: string) => {
+                                    boxes[k].oldY = boxes[k].y
+                                })
+                                measureFinal()
+                                updateDragging(undefined)
+                            }}
+                        >
+                        </div>
+                    ))
+                }
+                <div
+                    ref={shadowRef}
+                    style={{ display: 'none', backgroundColor: 'transparent', width: 150, height: 150, transform: `translate(${x - mdX}px, ${y - mdY}px)`, position: 'absolute', left: 0, top: 0 }}
+                />
+            </div >
+        )
+    } else {
+        return (
+            <div className="w-full h-[1000px] absolute overlow-hidden" onMouseMove={e => {
+                if (shadowRef.current) {
+                    shadowRef.current.style.transform = `translate(${e.clientX - (relPosX >= 0 ? relPosX : 25) - 16}px, ${e.clientY - (relPosY >= 0 ? relPosY : 25) - getOffset()}px)`;
+                }
+            }}>
+                {
+                    Object.keys(boxes).map((k: string) => (
+                        <div
+                            id={k}
+                            style={{ border: dragId === k ? '2px solid #fff' : undefined, backgroundColor: dragging === k ? 'transparent' : boxes[k].color, width: 150, height: 150, transform: `translate(${boxes[k].x}px, ${boxes[k].y}px)`, position: 'absolute', left: 0, top: 0 }}
+
+                        >
+                        </div>
+                    ))
+                }
+                <div
+                    ref={shadowRef}
+                    style={{ backgroundColor: 'transparent', width: 150, height: 150, transform: `translate(${x - mdX}px, ${y - mdY}px)`, position: 'absolute', left: 0, top: 0 }}
+                    onMouseDown={e => {
+                        mdX = e.clientX - 16;
+                        mdY = e.clientY - getOffset();
+                        let k = Object.keys(boxes).find((key: string) => {
+                            return ((boxes[key].x < mdX && (mdX < (boxes[key].x + boxes[key].w))) &&
+                                (boxes[key].y < mdY && (mdY < (boxes[key].y + boxes[key].h))));
+                        })
+                        if (k) {
+                            mdX = e.clientX;
+                            mdY = e.clientY;
+                            const b = boxes[k]
+                            initialPosX = b.el.getBoundingClientRect().x - 16;
+                            initialPosY = b.el.getBoundingClientRect().y - getOffset();
                             if (shadowRef.current) {
-                                shadowRef.current.style.transform = `translate(${x - mdX}px, ${y - mdY}px)`
+                                relPosX = mdX - b.x - 16;
+                                relPosY = mdY - b.y - getOffset();
+                                shadowRef.current.style.backgroundColor = b.color;
                             }
+                            dragging = k
+                            updateDragging(k)
+                        }
+                    }}
+                    onTouchMove={e => {
+                        if (dragging) {
+                            const clientX = e.touches[0].clientX;
+                            const clientY = e.touches[0].clientY;
+                            const b = boxes[dragging];
+                            b.x = clientX - mdX + initialPosX;
+                            b.y = clientY - mdY + initialPosY;
                             measureFinal()
                         }
-                    }
-                }}
-                onTouchMove={e => {
-                    let oldY = y;
-                    x = e.touches[0].clientX;
-                    y = e.touches[0].clientY;
-                    if (dragging) {
-                        if (boxes[dragging]?.el) {
-                            boxes[dragging].x = x - mdX
-                            boxes[dragging].y = y - mdY
-                            if (shadowRef.current) {
-                                shadowRef.current.style.transform = `translate(${x - mdX}px, ${y - mdY}px)`
-                            }
+                    }}
+                    onMouseMove={e => {
+                        if (dragging) {
+                            const clientX = e.clientX;
+                            const clientY = e.clientY;
+                            const b = boxes[dragging];
+                            b.x = clientX - mdX + initialPosX;
+                            b.y = clientY - mdY + initialPosY;
                             measureFinal()
                         }
-                    } else {
-                        scrolled(oldY - y);
-                    }
-                }}
-                onContextMenu={e => {
-                    e.stopPropagation()
-                    e.preventDefault()
-                    x = e.clientX
-                    y = e.clientY
-                    const keyOfBox = Object.keys(boxes).find((k: string) => {
-                        const b = boxes[k]
-                        return (
-                            (b.el.getBoundingClientRect().x) < x &&
-                            (b.el.getBoundingClientRect().x + b.el.getBoundingClientRect().width) > x &&
-                            (b.el.getBoundingClientRect().y) < y &&
-                            (b.el.getBoundingClientRect().y + b.el.getBoundingClientRect().height) > y
-                        )
-                    })
-                    if (keyOfBox) {
+                    }}
+                    onTouchEnd={() => {
                         if (shadowRef.current) {
-                            shadowRef.current.style.display = 'block';
+                            shadowRef.current.style.backgroundColor = 'transparent';
                         }
-                        const b = boxes[keyOfBox]
-                        mdX = e.clientX - b.el.getBoundingClientRect().x + 16
-                        mdY = e.clientY - b.el.getBoundingClientRect().y + 300
-                        dragging = keyOfBox
-                        setDragId(keyOfBox)
-                    }
-                }}
-                onMouseDown={(e: MouseEvent<HTMLDivElement>) => {
-                    x = e.clientX
-                    y = e.clientY
-                    const keyOfBox = Object.keys(boxes).find((k: string) => {
-                        const b = boxes[k]
-                        return (
-                            (b.el.getBoundingClientRect().x) < x &&
-                            (b.el.getBoundingClientRect().x + b.el.getBoundingClientRect().width) > x &&
-                            (b.el.getBoundingClientRect().y) < y &&
-                            (b.el.getBoundingClientRect().y + b.el.getBoundingClientRect().height) > y
-                        )
-                    })
-                    if (keyOfBox) {
+                        relPosX = -1;
+                        relPosY = -1;
+                        dragging = undefined
+                        Object.keys(boxes).forEach((k: string) => {
+                            boxes[k].oldY = boxes[k].y
+                        })
+                        measureFinal()
+                        updateDragging(undefined)
+                    }}
+                    onMouseUp={() => {
                         if (shadowRef.current) {
-                            shadowRef.current.style.display = 'block';
+                            shadowRef.current.style.backgroundColor = 'transparent';
                         }
-                        const b = boxes[keyOfBox]
-                        mdX = e.clientX - b.el.getBoundingClientRect().x + 16
-                        mdY = e.clientY - b.el.getBoundingClientRect().y + 300
-                        dragging = keyOfBox
-                        setDragId(keyOfBox)
-                    }
-                }}
-                onTouchEnd={() => {
-                    if (shadowRef.current) {
-                        shadowRef.current.style.display = 'none';
-                    }
-                    dragging = undefined
-                    Object.keys(boxes).forEach((k: string) => {
-                        boxes[k].oldY = boxes[k].y
-                    })
-                    measureFinal()
-                    setDragId(undefined)
-                }}
-                onMouseUp={() => {
-                    if (shadowRef.current) {
-                        shadowRef.current.style.display = 'none';
-                    }
-                    dragging = undefined
-                    Object.keys(boxes).forEach((k: string) => {
-                        boxes[k].oldY = boxes[k].y
-                    })
-                    measureFinal()
-                    setDragId(undefined)
-                }}
-            />
-        </div>
-    )
+                        relPosX = -1;
+                        relPosY = -1;
+                        dragging = undefined
+                        Object.keys(boxes).forEach((k: string) => {
+                            boxes[k].oldY = boxes[k].y
+                        })
+                        measureFinal()
+                        updateDragging(undefined)
+                    }}
+                />
+            </div >
+        )
+    }
 }
