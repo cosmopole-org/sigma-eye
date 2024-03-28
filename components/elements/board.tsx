@@ -68,7 +68,7 @@ export default function Board({ scrolled, changeScrollLock, getSCrollY }: Readon
                     Object.keys(boxes).map((k: string) => (
                         <div
                             id={k}
-                            style={{ border: dragId === k ? '2px solid #fff' : undefined, backgroundColor: dragging === k ? 'transparent' : boxes[k].color, width: 150, height: 150, transform: `translate(${boxes[k].x}px, ${boxes[k].y}px)`, position: 'absolute', left: 0, top: 0 }}
+                            style={{ border: dragId === k ? '2px solid #fff' : undefined, width: 150, height: 150, transform: `translate(${boxes[k].x}px, ${boxes[k].y}px)`, position: 'absolute', left: 0, top: 0, padding: 4 }}
                             onContextMenu={e => {
                                 e.preventDefault();
                                 mdX = e.clientX - 16;
@@ -117,11 +117,13 @@ export default function Board({ scrolled, changeScrollLock, getSCrollY }: Readon
                                 }
                             }}
                         >
+                            <div className="w-full h-full rounded-xl" style={{ backgroundColor: dragging === k ? 'transparent' : boxes[k].color }} />
                         </div>
                     ))
                 }
                 <div
                     ref={shadowRef}
+                    className="rounded-xl"
                     style={{ display: 'none', backgroundColor: 'transparent', width: 150, height: 150, transform: `translate(${x - mdX}px, ${y - mdY}px)`, position: 'absolute', left: 0, top: 0 }}
                 />
             </div >
@@ -137,14 +139,16 @@ export default function Board({ scrolled, changeScrollLock, getSCrollY }: Readon
                     Object.keys(boxes).map((k: string) => (
                         <div
                             id={k}
-                            style={{ border: dragId === k ? '2px solid #fff' : undefined, backgroundColor: dragging === k ? 'transparent' : boxes[k].color, width: 150, height: 150, transform: `translate(${boxes[k].x}px, ${boxes[k].y}px)`, position: 'absolute', left: 0, top: 0 }}
+                            style={{ border: dragId === k ? '2px solid #fff' : undefined, width: 150, height: 150, transform: `translate(${boxes[k].x}px, ${boxes[k].y}px)`, position: 'absolute', left: 0, top: 0, padding: 4 }}
 
                         >
+                            <div className="w-full h-full rounded-xl" style={{ backgroundColor: dragging === k ? 'transparent' : boxes[k].color }} />
                         </div>
                     ))
                 }
                 <div
                     ref={shadowRef}
+                    className="rounded-xl"
                     style={{ backgroundColor: 'transparent', width: 150, height: 150, transform: `translate(${x - mdX}px, ${y - mdY}px)`, position: 'absolute', left: 0, top: 0 }}
                     onMouseDown={e => {
                         mdX = e.clientX - 16;

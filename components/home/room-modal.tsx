@@ -32,7 +32,7 @@ export default function RoomModal() {
     return (
         <div
             style={{ display: dis || open.get({ noproxy: true }) ? 'block' : 'none', zIndex: 50, transform: dis && open.get({ noproxy: true }) ? 'translateX(0px)' : 'translateX(50%)', opacity: dis && open.get({ noproxy: true }) ? 1 : 0, transition: 'transform 250ms, opacity 250ms' }}
-            className="w-screen h-screen fixed right-0 top-0"
+            className="w-screen h-full fixed right-0 top-0"
         >
             <div ref={scrollerRef} className="overflow-y-auto overflow-x-hidden relative w-full h-full" style={{ overscrollBehavior: 'contain' }}>
                 <div className="fixed" style={{ minHeight: 270 }}>
