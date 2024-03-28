@@ -26,12 +26,6 @@ export default function RoomModal() {
         >
             <div ref={scrollerRef} className="overflow-auto relative w-full h-full" style={{ overscrollBehavior: 'contain' }}>
                 <div className="fixed" style={{ minHeight: 270 }}>
-                    <img
-                        alt="header"
-                        src={'/images/photos/header.jpg'}
-                        className="object-cover"
-                        style={{ width: '100%', height: 300 }}
-                    />
                     <Card isBlurred className="rounded-full w-auto h-auto flex absolute left-2 top-2">
                         <IconButton name="back" onClick={() => {
                             router.push('/api/home/city');
