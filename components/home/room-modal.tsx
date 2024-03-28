@@ -7,6 +7,7 @@ import IconButton from "../elements/icon-button";
 import { useRouter } from "next/navigation";
 import { getUsers } from "@/api/offline/constants";
 import { useRef } from "react";
+import { useTheme } from "next-themes";
 
 export const roomModalView = hookstate(false);
 
@@ -16,6 +17,7 @@ export const switchRoomModal = (v: boolean) => {
 
 export default function RoomModal() {
     const router = useRouter();
+    const { theme } = useTheme();
     const scrollerRef = useRef<HTMLDivElement>(null);
     return (
         <Card
@@ -41,22 +43,9 @@ export default function RoomModal() {
                         <span className="ml-[64px] text-sm">Welcome to Library!</span>
                     </Card>
                 </div>
-                <Card className="w-full h-auto px-4 py-6 mt-[268px]" style={{ minHeight: 1000, borderRadius: '24px 24px 0px 0px' }}>
-                    <Board
-                        scrolled={(diff: number) => {
-                            if (scrollerRef.current) {
-                                scrollerRef.current.scrollTop += diff;
-                            }
-                        }}
-                        changeScrollLock={(v: boolean) => {
-                            if (scrollerRef.current) {
-                                scrollerRef.current.style.overflow = v ? 'hidden' : 'auto';
-                            }
-                        }}
-                        getSCrollY={() => {
-                            return (scrollerRef.current?.scrollTop ?? 0);
-                        }} />
-                </Card>
+                <div className="w-full h-auto px-4 py-6 mt-[268px] relative" style={{ minHeight: 1000, borderRadius: '24px 24px 0px 0px', backgroundColor: theme === 'light' ? '#fff' : '#171717' }}>
+                    
+                </div>
             </div>
         </Card>
     )
