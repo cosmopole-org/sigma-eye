@@ -3,8 +3,6 @@
 import { Card } from "@nextui-org/react";
 import { BottomNavItem } from "../elements/bottomnav-item";
 import { hookstate, useHookstate } from "@hookstate/core";
-import { useRouter } from "next/navigation";
-import { switchRoomLoading } from "../../api/offline/states";
 
 export const selectedRoomSection = hookstate("board");
 export const switchHomeSection = (s: string) => {
@@ -13,11 +11,8 @@ export const switchHomeSection = (s: string) => {
 
 export default function RoomBottomNav() {
     const selectedState = useHookstate(selectedRoomSection);
-    const router = useRouter();
     const onItemClick = (key: string) => () => {
         selectedState.set(key);
-        switchRoomLoading(true);
-        router.push('/api/room/' + key);
     }
     return (
         <Card className="grid grid-cols-3 fixed bottom-0 left-0 w-full h-[72px] pt-1" style={{ borderRadius: '24px 24px 0px 0px', zIndex: 1000}}>
