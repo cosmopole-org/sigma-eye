@@ -34,10 +34,10 @@ export default function RoomLayout({
 				}
 			}
 		}
-		window.addEventListener('scroll', scroller);
+		//window.addEventListener('scroll', scroller);
 		open.set(true);
 		return () => {
-			window.removeEventListener('scroll', scroller);
+			//window.removeEventListener('scroll', scroller);
 		}
 	}, []);
 	return (

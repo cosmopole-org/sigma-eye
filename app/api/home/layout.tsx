@@ -31,9 +31,9 @@ export default function HomeLayout({
 				}
 			}
 		}
-		window.addEventListener('scroll', scroller);
+		//window.addEventListener('scroll', scroller);
 		return () => {
-			window.removeEventListener('scroll', scroller);
+			//window.removeEventListener('scroll', scroller);
 		}
 	}, []);
 	return (

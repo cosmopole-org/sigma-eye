@@ -1,5 +1,6 @@
 "use client"
 
+import { isTouchDevice } from "@/api/offline/constants";
 import { Card } from "@nextui-org/react";
 import React, { MouseEvent, useEffect, useRef, useState } from "react";
 
@@ -46,13 +47,6 @@ const measureFinal = () => {
 }
 
 let initialPosX = 0, initialPosY = 0, relPosX = -1, relPosY = -1;
-
-
-function isTouchDevice() {
-    return (('ontouchstart' in window) ||
-        (navigator.maxTouchPoints > 0) ||
-        ((navigator as any).msMaxTouchPoints > 0));
-}
 
 export default function Board({ scrolled, changeScrollLock, getSCrollY }: Readonly<{ changeScrollLock: (v: boolean) => void, scrolled: (v: number) => void, getSCrollY: () => number }>) {
     const getOffset = () => (300 - getSCrollY())
