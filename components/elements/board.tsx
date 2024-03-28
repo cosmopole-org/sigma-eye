@@ -88,29 +88,33 @@ export default function Board({ scrolled, changeScrollLock, getSCrollY }: Readon
                                 updateDragging(k)
                             }}
                             onTouchMove={e => {
-                                const clientX = e.touches[0].clientX;
-                                const clientY = e.touches[0].clientY;
-                                const b = boxes[k];
-                                b.x = clientX - mdX + initialPosX;
-                                b.y = clientY - mdY + initialPosY;
-                                if (shadowRef.current) {
-                                    shadowRef.current.style.transform = `translate(${clientX - (relPosX >= 0 ? relPosX : 25) - 16}px, ${clientY - (relPosY >= 0 ? relPosY : 25) - getOffset()}px)`;
+                                if (dragging) {
+                                    const clientX = e.touches[0].clientX;
+                                    const clientY = e.touches[0].clientY;
+                                    const b = boxes[k];
+                                    b.x = clientX - mdX + initialPosX;
+                                    b.y = clientY - mdY + initialPosY;
+                                    if (shadowRef.current) {
+                                        shadowRef.current.style.transform = `translate(${clientX - (relPosX >= 0 ? relPosX : 25) - 16}px, ${clientY - (relPosY >= 0 ? relPosY : 25) - getOffset()}px)`;
+                                    }
+                                    measureFinal()
                                 }
-                                measureFinal()
                             }}
                             onTouchEnd={() => {
-                                if (shadowRef.current) {
-                                    shadowRef.current.style.display = 'none';
-                                    shadowRef.current.style.backgroundColor = 'transparent';
+                                if (dragging) {
+                                    if (shadowRef.current) {
+                                        shadowRef.current.style.display = 'none';
+                                        shadowRef.current.style.backgroundColor = 'transparent';
+                                    }
+                                    relPosX = -1;
+                                    relPosY = -1;
+                                    dragging = undefined
+                                    Object.keys(boxes).forEach((k: string) => {
+                                        boxes[k].oldY = boxes[k].y
+                                    })
+                                    measureFinal()
+                                    updateDragging(undefined)
                                 }
-                                relPosX = -1;
-                                relPosY = -1;
-                                dragging = undefined
-                                Object.keys(boxes).forEach((k: string) => {
-                                    boxes[k].oldY = boxes[k].y
-                                })
-                                measureFinal()
-                                updateDragging(undefined)
                             }}
                         >
                         </div>
