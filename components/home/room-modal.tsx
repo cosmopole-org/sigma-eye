@@ -26,6 +26,12 @@ export default function RoomModal() {
         >
             <div ref={scrollerRef} className="overflow-auto relative w-full h-full" style={{ overscrollBehavior: 'contain' }}>
                 <div className="fixed" style={{ minHeight: 270 }}>
+                    <img
+                        alt="header"
+                        src={'/images/photos/header.jpg'}
+                        className="object-cover"
+                        style={{ width: '100%', height: 300 }}
+                    />
                     <Card isBlurred className="rounded-full w-auto h-auto flex absolute left-2 top-2">
                         <IconButton name="back" onClick={() => {
                             router.push('/api/home/city');
@@ -38,7 +44,20 @@ export default function RoomModal() {
                     </Card>
                 </div>
                 <div className="w-full h-auto px-4 py-6 mt-[268px] relative" style={{ minHeight: 1000, borderRadius: '24px 24px 0px 0px', backgroundColor: theme === 'light' ? '#fff' : '#171717' }}>
-                    
+                    <Board
+                        scrolled={(diff: number) => {
+                            if (scrollerRef.current) {
+                                scrollerRef.current.scrollTop += diff;
+                            }
+                        }}
+                        changeScrollLock={(v: boolean) => {
+                            if (scrollerRef.current) {
+                                scrollerRef.current.style.overflow = v ? 'hidden' : 'auto';
+                            }
+                        }}
+                        getSCrollY={() => {
+                            return (scrollerRef.current?.scrollTop ?? 0);
+                        }} />
                 </div>
             </div>
         </Card>
