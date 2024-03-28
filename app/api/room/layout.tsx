@@ -44,13 +44,17 @@ export default function RoomLayout({
 			}
 		}
 	}, []);
+	let wWidth = 0;
+	if (typeof window !== 'undefined') {
+		wWidth = window.innerWidth;
+	}
 	return (
 		<div className="relative flex flex-col h-screen overflow-hidden">
 			<div className="w-full h-full fixed top-0 left-0">
 				<City />
 				<HomeBottomNav />
 			</div>
-			<main className="w-full h-full relative" style={{ transition: 'transform 250ms', transform: open.get({ noproxy: true }) ? 'translateX(0px)' : 'translateX(400px)' }}>
+			<main className="w-full h-full relative" style={{ transition: 'transform 250ms', transform: open.get({ noproxy: true }) ? 'translateX(0px)' : `translateX(${wWidth - 1}px)` }}>
 				{children}
 				{
 					showLoadingState.get({ noproxy: true }) ? (
