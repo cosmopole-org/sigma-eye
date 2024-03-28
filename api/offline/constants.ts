@@ -15,9 +15,12 @@ const emojis = [
 ];
 
 export function isTouchDevice() {
-    return (('ontouchstart' in window) ||
-        (navigator.maxTouchPoints > 0) ||
-        ((navigator as any).msMaxTouchPoints > 0));
+    if (typeof window !== 'undefined') {
+        return (('ontouchstart' in window) ||
+            (navigator.maxTouchPoints > 0) ||
+            ((navigator as any).msMaxTouchPoints > 0));
+    }
+    return false;
 }
 
 const users = [
