@@ -1,3 +1,5 @@
+"use client"
+
 import Board from "../elements/board";
 import { Card, Image } from "@nextui-org/react";
 import { hookstate } from "@hookstate/core";
