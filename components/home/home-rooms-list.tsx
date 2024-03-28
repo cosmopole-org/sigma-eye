@@ -4,8 +4,7 @@ import { Card } from "@nextui-org/react"
 import IconButton from "../elements/icon-button"
 import { getUsers } from "@/api/offline/constants"
 import { hookstate, useHookstate } from "@hookstate/core"
-import { useRouter } from "next/navigation"
-import { switchMainLoading } from "@/api/offline/states"
+import { switchRoomModal } from "./room-modal"
 
 export const roomsListView = hookstate(false);
 export const switchRoomsList = (v: boolean) => {
@@ -14,7 +13,6 @@ export const switchRoomsList = (v: boolean) => {
 
 export default function HomeRoomsList() {
     const roomsListState = useHookstate(roomsListView);
-    const router = useRouter();
     return (
         <Card className="fixed top-[172px] overflow-x-hidden" style={{
             width: 'calc(100% - 78px)', height: 'calc(100% - 184px)', borderRadius: '24px 0px 0px 0px', right: 0,
@@ -34,8 +32,7 @@ export default function HomeRoomsList() {
             >
                 {getUsers().map(item => (
                     <Card onClick={() => {
-                        switchMainLoading(true);
-                        router.push('/api/room/board')
+                        switchRoomModal(true);
                     }} className="mt-4 m-h-16 w-full bg-transparent" key={item.id} isPressable shadow="none">
                         <div className="flex gap-2 w-full">
                             <div className="flex flex-col">
