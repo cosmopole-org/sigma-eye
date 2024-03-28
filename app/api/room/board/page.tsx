@@ -1,4 +1,3 @@
-"use client"
 
 import RoomModal from "@/components/home/room-modal";
 
