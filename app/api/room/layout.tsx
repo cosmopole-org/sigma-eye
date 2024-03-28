@@ -34,10 +34,14 @@ export default function RoomLayout({
 				}
 			}
 		}
-		//window.addEventListener('scroll', scroller);
+		if (typeof window !== 'undefined') {
+			window.addEventListener('scroll', scroller);
+		}
 		open.set(true);
 		return () => {
-			//window.removeEventListener('scroll', scroller);
+			if (typeof window !== 'undefined') {
+				window.removeEventListener('scroll', scroller);
+			}
 		}
 	}, []);
 	return (

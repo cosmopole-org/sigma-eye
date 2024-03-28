@@ -31,9 +31,13 @@ export default function HomeLayout({
 				}
 			}
 		}
-		//window.addEventListener('scroll', scroller);
+		if (typeof window !== 'undefined') {
+			window.addEventListener('scroll', scroller);
+		}
 		return () => {
-			//window.removeEventListener('scroll', scroller);
+			if (typeof window !== 'undefined') {
+				window.removeEventListener('scroll', scroller);
+			}
 		}
 	}, []);
 	return (
