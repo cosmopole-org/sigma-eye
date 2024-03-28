@@ -5,8 +5,6 @@ import RoomBottomNav, { selectedRoomSection } from "@/components/home/room-botto
 import { useHookstate } from "@hookstate/core";
 import { Card, CircularProgress } from "@nextui-org/react";
 import { useEffect } from "react";
-import City from "../home/city/page";
-import HomeBottomNav from "@/components/home/home-bottomnav";
 import { roomSliderView, showRoomLoading } from '../../../api/offline/states';
 
 export default function RoomLayout({
@@ -46,11 +44,7 @@ export default function RoomLayout({
 	}, []);
 	return (
 		<div className="relative flex flex-col h-screen overflow-hidden">
-			<div className="w-full h-full fixed top-0 left-0">
-				<City />
-				<HomeBottomNav />
-			</div>
-			<main className="w-full h-full relative" style={{ transition: 'transform 250ms, opacity 250ms', opacity: open.get({ noproxy: true }) ? 1 : 0, transform: open.get({ noproxy: true }) ? 'translateX(0px)' : `translateX(100px)` }}>
+			<main className="w-full h-full relative">
 				{children}
 				{
 					showLoadingState.get({ noproxy: true }) ? (

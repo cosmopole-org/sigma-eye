@@ -5,7 +5,6 @@ import { Card, Image } from "@nextui-org/react";
 import { hookstate } from "@hookstate/core";
 import IconButton from "../elements/icon-button";
 import { useRouter } from "next/navigation";
-import { swtichRoomSlider } from "../../api/offline/states";
 import { getUsers } from "@/api/offline/constants";
 import { useRef } from "react";
 
@@ -33,10 +32,7 @@ export default function RoomModal() {
                     />
                     <Card isBlurred className="rounded-full w-auto h-auto flex absolute left-2 top-2">
                         <IconButton name="back" onClick={() => {
-                            swtichRoomSlider(false);
-                            setTimeout(() => {
-                                router.push('/api/home/city');
-                            }, 250);
+                            router.push('/api/home/city');
                         }} />
                     </Card>
                     <Card isBlurred className="dark:bg-zinc-100 pr-12 w-auto h-[64px] flex absolute left-[8px] bottom-[40px]" style={{ borderRadius: 32 }}>
