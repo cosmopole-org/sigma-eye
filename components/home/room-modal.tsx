@@ -29,32 +29,38 @@ export default function RoomModal() {
             setDis(true);
         }
     }, [open.get({ noproxy: true })]);
+    let blockWidth = 0;
+    if (typeof window !== 'undefined') {
+        blockWidth = (window.innerWidth - 32) / 2;
+    }
     return (
         <div
-            style={{ display: dis || open.get({ noproxy: true }) ? 'block' : 'none', zIndex: 50, transform: dis && open.get({ noproxy: true }) ? 'translateX(0px)' : 'translateX(50%)', opacity: dis && open.get({ noproxy: true }) ? 1 : 0, transition: 'transform 250ms, opacity 250ms' }}
+            style={{ backgroundColor: theme === 'light' ? '#fff' : '#171717', display: dis || open.get({ noproxy: true }) ? 'block' : 'none', zIndex: 50, transform: dis && open.get({ noproxy: true }) ? 'translateX(0px)' : 'translateX(50%)', opacity: dis && open.get({ noproxy: true }) ? 1 : 0, transition: 'transform 250ms, opacity 250ms' }}
             className="w-screen h-full fixed right-0 top-0"
         >
             <div ref={scrollerRef} className="overflow-y-auto overflow-x-hidden relative w-full h-full" style={{ overscrollBehavior: 'contain' }}>
-                <div className="fixed" style={{ minHeight: 270 }}>
-                    <img
-                        alt="header"
-                        src={'/images/photos/header.jpg'}
-                        className="object-cover"
-                        style={{ width: '100%', height: 300 }}
-                    />
-                    <Card isBlurred className="rounded-full w-auto h-auto flex absolute left-2 top-2">
-                        <IconButton name="back" onClick={() => {
-                            open.set(false);
-                        }} />
-                    </Card>
-                    <Card isBlurred className="dark:bg-zinc-100 pr-12 w-auto h-[64px] flex absolute left-[8px] bottom-[40px]" style={{ borderRadius: 32 }}>
-                        <Image width={64} height={64} src={getUsers()[0].avatar} radius="full" isBlurred className="p-2" />
-                        <span className="-mt-14 ml-[64px] text-xl">Library</span>
-                        <span className="ml-[64px] text-sm">Welcome to Library!</span>
-                    </Card>
+                <div className="absolute top-4 left-4 overflow-hidden" style={{ width: 'calc(100% - 32px)', height: 270, borderRadius: 32 }}>
+                    <div className="relative w-full h-full">
+                        <img
+                            alt="header"
+                            src={'https://i.pinimg.com/564x/e6/58/6d/e6586d1828417302b749e190ab92747f.jpg'}
+                            className="object-cover w-full h-full absolute left-0 top-0"
+                        />
+                        <Card isBlurred className="rounded-full w-auto h-auto flex absolute left-2 top-2">
+                            <IconButton name="back" onClick={() => {
+                                open.set(false);
+                            }} />
+                        </Card>
+                        <Card isBlurred className="pr-12 w-auto h-[48px] flex absolute left-[8px] bottom-[8px]" style={{ borderRadius: 32 }}>
+                            <Image width={48} height={48} src={getUsers()[0].avatar} radius="full" isBlurred className="p-1" />
+                            <span className="-mt-12 ml-[50px] text-lg">Library</span>
+                            <span className="ml-[50px] -mt-1 text-sm">Welcome to Library!</span>
+                        </Card>
+                    </div>
                 </div>
-                <div className="overflow-hidden w-full h-auto px-4 py-6 mt-[268px] relative" style={{ minHeight: 1000, borderRadius: '24px 24px 0px 0px', backgroundColor: theme === 'light' ? '#fff' : '#171717' }}>
+                <div className="overflow-hidden w-full h-auto px-4 py-6 mt-[268px] relative" style={{ minHeight: 1000, borderRadius: '24px 24px 0px 0px' }}>
                     <Board
+                        blockWidth={blockWidth}
                         scrolled={(diff: number) => {
                             if (scrollerRef.current) {
                                 scrollerRef.current.scrollTop += diff;

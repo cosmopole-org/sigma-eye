@@ -2,17 +2,19 @@
 
 import { isTouchDevice } from "@/api/offline/constants";
 import { Card } from "@nextui-org/react";
+import { useTheme } from "next-themes";
 import React, { MouseEvent, useEffect, useRef, useState } from "react";
+import AppletHost from "../room/AppletHost";
 
 type Box = { el: HTMLDivElement | any, key: string, x: number, y: number, w: number, h: number, color: string, oldY: number }
 
 let boxes: { [id: string]: Box } = {
-    red: { el: null, key: 'red', x: 0, y: 0, w: 150, h: 150, color: 'red', oldY: 0 },
-    green: { el: null, key: 'green', x: 0, y: 150, w: 150, h: 150, color: 'green', oldY: 150 },
-    blue: { el: null, key: 'blue', x: 0, y: 300, w: 150, h: 150, color: 'blue', oldY: 300 },
-    red2: { el: null, key: 'red', x: 0, y: 450, w: 150, h: 150, color: 'red', oldY: 450 },
-    green2: { el: null, key: 'green', x: 0, y: 600, w: 150, h: 150, color: 'green', oldY: 600 },
-    blue2: { el: null, key: 'blue', x: 0, y: 750, w: 150, h: 150, color: 'blue', oldY: 750 }
+    red: { el: null, key: 'red', x: 0, y: 0, w: 150, h: 150, color: '#ffffff6f', oldY: 0 },
+    green: { el: null, key: 'green', x: 0, y: 150, w: 150, h: 150, color: '#ffffff6f', oldY: 150 },
+    blue: { el: null, key: 'blue', x: 0, y: 300, w: 150, h: 150, color: '#ffffff6f', oldY: 300 },
+    red2: { el: null, key: 'red', x: 0, y: 450, w: 150, h: 150, color: '#ffffff6f', oldY: 450 },
+    green2: { el: null, key: 'green', x: 0, y: 600, w: 150, h: 150, color: '#ffffff6f', oldY: 600 },
+    blue2: { el: null, key: 'blue', x: 0, y: 750, w: 150, h: 150, color: '#ffffff6f', oldY: 750 }
 }
 let dragging: string | undefined = undefined;
 let mdX = 0, mdY = 0
@@ -39,7 +41,7 @@ const measureFinal = () => {
                 }
             }
         })
-        box.y = newY
+        box.y = newY >= 4 ? newY : 4
     })
     Object.keys(boxes).forEach((k: string) => {
         boxes[k].el.style.transform = `translate(${boxes[k].x}px, ${boxes[k].y}px)`
@@ -48,27 +50,33 @@ const measureFinal = () => {
 
 let initialPosX = 0, initialPosY = 0, relPosX = -1, relPosY = -1;
 
-export default function Board({ scrolled, changeScrollLock, getSCrollY }: Readonly<{ changeScrollLock: (v: boolean) => void, scrolled: (v: number) => void, getSCrollY: () => number }>) {
+export default function Board({ blockWidth, scrolled, changeScrollLock, getSCrollY }: Readonly<{ blockWidth: number, changeScrollLock: (v: boolean) => void, scrolled: (v: number) => void, getSCrollY: () => number }>) {
     const getOffset = () => (300 - getSCrollY())
     const [dragId, setDragId] = useState<string | undefined>(undefined);
+    const { theme } = useTheme();
     const updateDragging = (v: string | undefined) => {
         changeScrollLock(v !== undefined);
         setDragId(v);
     }
     const shadowRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
-        Object.keys(boxes).forEach((k: string) => {
+        Object.keys(boxes).forEach((k: string, index: number) => {
             boxes[k].el = (document.getElementById(k) as HTMLDivElement);
+            boxes[k].w = blockWidth;
+            boxes[k].h = blockWidth;
+            if (index % 2 === 0) boxes[k].x = 0;
+            else boxes[k].x = blockWidth;
         })
+        measureFinal();
     }, []);
     if (isTouchDevice()) {
         return (
             <div className="w-full h-[1000px] absolute overlow-hidden">
                 {
-                    Object.keys(boxes).map((k: string) => (
+                    Object.keys(boxes).map((k: string, index: number) => (
                         <div
                             id={k}
-                            style={{ border: dragId === k ? '2px solid #fff' : undefined, width: 150, height: 150, transform: `translate(${boxes[k].x}px, ${boxes[k].y}px)`, position: 'absolute', left: 0, top: 0, padding: 4 }}
+                            style={{ border: dragId === k ? '2px solid #fff' : undefined, width: boxes[k].w, height: boxes[k].h, transform: `translate(${boxes[k].x}px, ${boxes[k].y}px)`, position: 'absolute', left: 0, top: 0, padding: 4 }}
                             onContextMenu={e => {
                                 e.preventDefault();
                                 mdX = e.clientX - 16;
@@ -94,6 +102,8 @@ export default function Board({ scrolled, changeScrollLock, getSCrollY }: Readon
                                     const b = boxes[k];
                                     b.x = clientX - mdX + initialPosX;
                                     b.y = clientY - mdY + initialPosY;
+                                    if (b.x < 0) b.x = 0
+                                    if ((b.x + b.w) > window.innerWidth - 32) b.x = window.innerWidth - 32 - b.w
                                     if (shadowRef.current) {
                                         shadowRef.current.style.transform = `translate(${clientX - (relPosX >= 0 ? relPosX : 25) - 16}px, ${clientY - (relPosY >= 0 ? relPosY : 25) - getOffset()}px)`;
                                     }
@@ -117,14 +127,17 @@ export default function Board({ scrolled, changeScrollLock, getSCrollY }: Readon
                                 }
                             }}
                         >
-                            <div className="w-full h-full rounded-xl" style={{ backgroundColor: dragging === k ? 'transparent' : boxes[k].color }} />
+                            <Card isBlurred className="w-full h-full rounded-xl" style={{ backgroundColor: dragging === k ? 'transparent' : theme === 'light' ? '#ffffff6f' : '#2828286f' }}>
+                                <AppletHost.Host appletKey={k} entry="Test" index={index} code={`class Test { constructor() {} onMount() {} render() { return "hello" } }`}/>
+                            </Card>
                         </div>
                     ))
                 }
-                <div
+                <Card
+                    isBlurred
                     ref={shadowRef}
                     className="rounded-xl"
-                    style={{ display: 'none', backgroundColor: 'transparent', width: 150, height: 150, transform: `translate(${x - mdX}px, ${y - mdY}px)`, position: 'absolute', left: 0, top: 0 }}
+                    style={{ transition: 'opacity 250ms', display: 'none', backgroundColor: 'transparent', width: dragging ? boxes[dragging].w : 150, height: dragging ? boxes[dragging].h : 150, transform: `translate(${x - mdX}px, ${y - mdY}px)`, position: 'absolute', left: 0, top: 0 }}
                 />
             </div >
         )
@@ -172,16 +185,6 @@ export default function Board({ scrolled, changeScrollLock, getSCrollY }: Readon
                             updateDragging(k)
                         }
                     }}
-                    onTouchMove={e => {
-                        if (dragging) {
-                            const clientX = e.touches[0].clientX;
-                            const clientY = e.touches[0].clientY;
-                            const b = boxes[dragging];
-                            b.x = clientX - mdX + initialPosX;
-                            b.y = clientY - mdY + initialPosY;
-                            measureFinal()
-                        }
-                    }}
                     onMouseMove={e => {
                         if (dragging) {
                             const clientX = e.clientX;
@@ -191,19 +194,6 @@ export default function Board({ scrolled, changeScrollLock, getSCrollY }: Readon
                             b.y = clientY - mdY + initialPosY;
                             measureFinal()
                         }
-                    }}
-                    onTouchEnd={() => {
-                        if (shadowRef.current) {
-                            shadowRef.current.style.backgroundColor = 'transparent';
-                        }
-                        relPosX = -1;
-                        relPosY = -1;
-                        dragging = undefined
-                        Object.keys(boxes).forEach((k: string) => {
-                            boxes[k].oldY = boxes[k].y
-                        })
-                        measureFinal()
-                        updateDragging(undefined)
                     }}
                     onMouseUp={() => {
                         if (shadowRef.current) {
