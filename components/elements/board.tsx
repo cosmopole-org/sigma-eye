@@ -129,7 +129,7 @@ function Board({ blockWidth, scrolled, changeScrollLock, getSCrollY }: Readonly<
                             }}
                         >
                             <Card isBlurred className="w-full h-full rounded-xl" style={{ backgroundColor: dragging === k ? 'transparent' : theme === 'light' ? '#ffffff6f' : '#2828286f' }}>
-                                <AppletHost.Host appletKey={k} entry="Test" index={index} code={`class Test { constructor() {} onMount() {} render() { return "hello" } }`} />
+                     
                             </Card>
                         </div>
                     ))
