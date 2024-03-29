@@ -41,6 +41,11 @@ export default function RoomModal() {
             <div ref={scrollerRef} className="overflow-y-auto overflow-x-hidden relative w-full h-full" style={{ overscrollBehavior: 'contain' }}>
                 <div className="absolute top-4 left-4 overflow-hidden" style={{ width: 'calc(100% - 32px)', height: 270, borderRadius: 32 }}>
                     <div className="relative w-full h-full">
+                        <img
+                            alt="header"
+                            src={'https://i.pinimg.com/564x/e6/58/6d/e6586d1828417302b749e190ab92747f.jpg'}
+                            className="object-cover w-full h-full absolute left-0 top-0"
+                        />
                         <Card isBlurred className="rounded-full w-auto h-auto flex absolute left-2 top-2">
                             <IconButton name="back" onClick={() => {
                                 open.set(false);

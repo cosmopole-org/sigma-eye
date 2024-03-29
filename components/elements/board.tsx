@@ -5,6 +5,7 @@ import { Card } from "@nextui-org/react";
 import { useTheme } from "next-themes";
 import React, { MouseEvent, useEffect, useRef, useState } from "react";
 import AppletHost from "../room/AppletHost";
+import dynamic from "next/dynamic";
 
 type Box = { el: HTMLDivElement | any, key: string, x: number, y: number, w: number, h: number, color: string, oldY: number }
 
@@ -50,7 +51,7 @@ const measureFinal = () => {
 
 let initialPosX = 0, initialPosY = 0, relPosX = -1, relPosY = -1;
 
-export default function Board({ blockWidth, scrolled, changeScrollLock, getSCrollY }: Readonly<{ blockWidth: number, changeScrollLock: (v: boolean) => void, scrolled: (v: number) => void, getSCrollY: () => number }>) {
+function Board({ blockWidth, scrolled, changeScrollLock, getSCrollY }: Readonly<{ blockWidth: number, changeScrollLock: (v: boolean) => void, scrolled: (v: number) => void, getSCrollY: () => number }>) {
     const getOffset = () => (300 - getSCrollY())
     const [dragId, setDragId] = useState<string | undefined>(undefined);
     const { theme } = useTheme();
@@ -128,7 +129,7 @@ export default function Board({ blockWidth, scrolled, changeScrollLock, getSCrol
                             }}
                         >
                             <Card isBlurred className="w-full h-full rounded-xl" style={{ backgroundColor: dragging === k ? 'transparent' : theme === 'light' ? '#ffffff6f' : '#2828286f' }}>
-                                <AppletHost.Host appletKey={k} entry="Test" index={index} code={`class Test { constructor() {} onMount() {} render() { return "hello" } }`}/>
+                                <AppletHost.Host appletKey={k} entry="Test" index={index} code={`class Test { constructor() {} onMount() {} render() { return "hello" } }`} />
                             </Card>
                         </div>
                     ))
@@ -213,3 +214,7 @@ export default function Board({ blockWidth, scrolled, changeScrollLock, getSCrol
         )
     }
 }
+
+export default dynamic(() => Promise.resolve(Board), {
+    ssr: false
+});
