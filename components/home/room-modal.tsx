@@ -35,7 +35,7 @@ export default function RoomModal() {
     }
     return (
         <div
-            style={{ backgroundColor: theme === 'light' ? '#fff' : '#171717', display: dis || open.get({ noproxy: true }) ? 'block' : 'none', zIndex: 50, transform: dis && open.get({ noproxy: true }) ? 'translateX(0px)' : 'translateX(50%)', opacity: dis && open.get({ noproxy: true }) ? 1 : 0, transition: 'transform 250ms, opacity 250ms' }}
+            style={{ backgroundColor: theme === 'light' ? '#fff' : '#171717', display: dis || open.get({ noproxy: true }) ? 'block' : 'none', zIndex: 50, transform: dis && open.get({ noproxy: true }) ? 'translateX(0px)' : 'translateX(0px)', opacity: dis && open.get({ noproxy: true }) ? 1 : 1, transition: 'transform 250ms, opacity 250ms' }}
             className="w-screen h-full fixed right-0 top-0"
         >
             <div ref={scrollerRef} className="overflow-y-auto overflow-x-hidden relative w-full h-full" style={{ overscrollBehavior: 'contain' }}>
