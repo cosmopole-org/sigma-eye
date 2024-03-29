@@ -43,7 +43,7 @@ export default function RoomModal() {
                     <div className="relative w-full h-full">
                         <img
                             alt="header"
-                            src={theme === 'light' ? 'https://i.pinimg.com/564x/c2/fc/8b/c2fc8b9c90dd6cdfd10cc8a0bd09fcd2.jpg' : 'https://i.pinimg.com/564x/68/b7/e3/68b7e332736b1953a4bd11e72675bf17.jpg'}
+                            src={theme === 'light' ? 'https://i.pinimg.com/564x/c2/fc/8b/c2fc8b9c90dd6cdfd10cc8a0bd09fcd2.jpg' : 'https://i.pinimg.com/564x/cb/50/f4/cb50f45e7db240c81b77efd6e3973b54.jpg'}
                             className="object-cover w-full h-full absolute left-0 top-0"
                         />
                     </div>
