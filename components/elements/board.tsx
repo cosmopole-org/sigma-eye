@@ -128,9 +128,9 @@ function Board({ blockWidth, scrolled, changeScrollLock, getSCrollY }: Readonly<
                                 }
                             }}
                         >
-                            <Card isBlurred className="w-full h-full rounded-xl" style={{ backgroundColor: dragging === k ? 'transparent' : theme === 'light' ? '#ffffff6f' : '#2828286f' }}>
-                     
-                            </Card>
+                            <div className="w-full h-full rounded-xl" style={{ backgroundColor: dragging === k ? 'transparent' : theme === 'light' ? '#ffffff6f' : '#2828286f' }}>
+                                <AppletHost.Host appletKey={k} entry="Test" index={index} code={`class Test { constructor() {} onMount() {} render() { return "hello" } }`} />
+                            </div>
                         </div>
                     ))
                 }
@@ -215,6 +215,4 @@ function Board({ blockWidth, scrolled, changeScrollLock, getSCrollY }: Readonly<
     }
 }
 
-export default dynamic(() => Promise.resolve(Board), {
-    ssr: false
-});
+export default Board;
