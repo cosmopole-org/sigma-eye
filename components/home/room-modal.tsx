@@ -59,21 +59,7 @@ export default function RoomModal() {
                     </div>
                 </div>
                 <div className="overflow-hidden w-full h-auto px-4 py-6 mt-[268px] relative" style={{ minHeight: 1000, borderRadius: '24px 24px 0px 0px' }}>
-                    <Board
-                        blockWidth={blockWidth}
-                        scrolled={(diff: number) => {
-                            if (scrollerRef.current) {
-                                scrollerRef.current.scrollTop += diff;
-                            }
-                        }}
-                        changeScrollLock={(v: boolean) => {
-                            if (scrollerRef.current) {
-                                scrollerRef.current.style.overflow = v ? 'hidden' : 'auto';
-                            }
-                        }}
-                        getSCrollY={() => {
-                            return (scrollerRef.current?.scrollTop ?? 0);
-                        }} />
+                    
                 </div>
                 <RoomBottomNav />
             </div>
