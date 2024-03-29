@@ -57,7 +57,7 @@ function Board({ blockWidth, scrolled, changeScrollLock, getSCrollY }: Readonly<
     if (typeof window !== 'undefined') {
         wid = window.innerWidth;
     }
-    const getOffset = () => (320 - getSCrollY())
+    const getOffset = () => (196 + getSCrollY())
     const draggingIdState = useHookstate(draggingId);
     const { theme } = useTheme();
     const updateDragging = (v: string | undefined) => {

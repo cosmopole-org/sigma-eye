@@ -39,23 +39,19 @@ export default function RoomModal() {
             className="w-screen h-full fixed right-0 top-0 overflow-x-hidden"
         >
             <div ref={scrollerRef} className="overflow-y-auto overflow-x-hidden relative w-full h-full" style={{ overscrollBehavior: 'contain' }}>
-                <div className="absolute top-0 left-0 overflow-hidden w-full h-[328px]">
+                <div className="fixed top-0 left-0 overflow-hidden w-full h-full">
                     <div className="relative w-full h-full">
                         <img
                             alt="header"
-                            src={theme === 'light' ? 'https://i.pinimg.com/564x/c2/fc/8b/c2fc8b9c90dd6cdfd10cc8a0bd09fcd2.jpg' : 'https://i.pinimg.com/564x/cb/50/f4/cb50f45e7db240c81b77efd6e3973b54.jpg'}
+                            src={theme === 'light' ?
+                                'https://i.pinimg.com/564x/95/65/ac/9565acb26c627decd036b2118fdb68f3.jpg' :
+                                'https://i.pinimg.com/564x/88/f5/46/88f546fea513dc0e73bccefe3ac92eef.jpg'}
                             className="object-cover w-full h-full absolute left-0 top-0"
                         />
                     </div>
                 </div>
                 <RoomNavbar />
-                <Card className="h-12 mt-[252px] ml-4 p-1" style={{ width: 150, borderRadius: 24, backgroundColor: theme === 'light' ? '#fff' : '#282828' }}>
-                    <div className="w-full h-full flex">
-                        <Avatar src={getUsers()[0].avatar} />
-                        <span className="ml-2 mt-2 text-lg"> Room 1</span>
-                    </div>
-                </Card>
-                <div className="w-full h-auto px-4 py-4 mt-[16px] relative" style={{ minHeight: 1000, borderRadius: '16px 16px 0px 0px', backgroundColor: theme === 'light' ? '#eee' : '#171717' }}>
+                <div className="w-full h-auto px-4 py-4 relative" style={{ minHeight: 1000 }}>
                     {
                         open.get({ noproxy: true }) ? (
                             <Board
