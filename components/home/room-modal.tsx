@@ -1,9 +1,8 @@
 "use client"
 
 import Board from "../elements/board";
-import { Avatar, Card, Image } from "@nextui-org/react";
+import { Avatar, Card } from "@nextui-org/react";
 import { hookstate, useHookstate } from "@hookstate/core";
-import IconButton from "../elements/icon-button";
 import { getUsers } from "@/api/offline/constants";
 import { useEffect, useRef, useState } from "react";
 import { useTheme } from "next-themes";
