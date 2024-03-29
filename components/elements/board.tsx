@@ -1,11 +1,12 @@
 "use client"
 
-import { isTouchDevice } from "@/api/offline/constants";
+import { getClockWidgetData, isTouchDevice } from "@/api/offline/constants";
 import { Card } from "@nextui-org/react";
 import { useTheme } from "next-themes";
-import React, { MouseEvent, useEffect, useRef, useState } from "react";
+import React, { memo, useEffect, useRef } from "react";
 import AppletHost from "../room/AppletHost";
-import dynamic from "next/dynamic";
+import { useHookstate } from "@hookstate/core";
+import { draggingId } from "@/api/offline/states";
 
 type Box = { el: HTMLDivElement | any, key: string, x: number, y: number, w: number, h: number, color: string, oldY: number }
 
@@ -13,9 +14,9 @@ let boxes: { [id: string]: Box } = {
     red: { el: null, key: 'red', x: 0, y: 0, w: 150, h: 150, color: '#ffffff6f', oldY: 0 },
     green: { el: null, key: 'green', x: 0, y: 150, w: 150, h: 150, color: '#ffffff6f', oldY: 150 },
     blue: { el: null, key: 'blue', x: 0, y: 300, w: 150, h: 150, color: '#ffffff6f', oldY: 300 },
-    red2: { el: null, key: 'red', x: 0, y: 450, w: 150, h: 150, color: '#ffffff6f', oldY: 450 },
-    green2: { el: null, key: 'green', x: 0, y: 600, w: 150, h: 150, color: '#ffffff6f', oldY: 600 },
-    blue2: { el: null, key: 'blue', x: 0, y: 750, w: 150, h: 150, color: '#ffffff6f', oldY: 750 }
+    red2: { el: null, key: 'red2', x: 0, y: 450, w: 150, h: 150, color: '#ffffff6f', oldY: 450 },
+    green2: { el: null, key: 'green2', x: 0, y: 600, w: 150, h: 150, color: '#ffffff6f', oldY: 600 },
+    blue2: { el: null, key: 'blue2', x: 0, y: 750, w: 150, h: 150, color: '#ffffff6f', oldY: 750 }
 }
 let dragging: string | undefined = undefined;
 let mdX = 0, mdY = 0
@@ -52,12 +53,16 @@ const measureFinal = () => {
 let initialPosX = 0, initialPosY = 0, relPosX = -1, relPosY = -1;
 
 function Board({ blockWidth, scrolled, changeScrollLock, getSCrollY }: Readonly<{ blockWidth: number, changeScrollLock: (v: boolean) => void, scrolled: (v: number) => void, getSCrollY: () => number }>) {
-    const getOffset = () => (300 - getSCrollY())
-    const [dragId, setDragId] = useState<string | undefined>(undefined);
+    let wid = 0;
+    if (typeof window !== 'undefined') {
+        wid = window.innerWidth;
+    }
+    const getOffset = () => (320 - getSCrollY())
+    const draggingIdState = useHookstate(draggingId);
     const { theme } = useTheme();
     const updateDragging = (v: string | undefined) => {
         changeScrollLock(v !== undefined);
-        setDragId(v);
+        draggingIdState.set(v);
     }
     const shadowRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
@@ -72,12 +77,12 @@ function Board({ blockWidth, scrolled, changeScrollLock, getSCrollY }: Readonly<
     }, []);
     if (isTouchDevice()) {
         return (
-            <div className="w-full h-[1000px] absolute overlow-hidden">
+            <div className="h-[1000px] absolute overflow-hidden" style={{width: wid - 16}}>
                 {
                     Object.keys(boxes).map((k: string, index: number) => (
                         <div
                             id={k}
-                            style={{ border: dragId === k ? '2px solid #fff' : undefined, width: boxes[k].w, height: boxes[k].h, transform: `translate(${boxes[k].x}px, ${boxes[k].y}px)`, position: 'absolute', left: 0, top: 0, padding: 4 }}
+                            style={{ border: dragging === k ? '2px solid #fff' : undefined, width: boxes[k].w, height: boxes[k].h, transform: `translate(${boxes[k].x}px, ${boxes[k].y}px)`, position: 'absolute', left: 0, top: 0, padding: 4 }}
                             onContextMenu={e => {
                                 e.preventDefault();
                                 mdX = e.clientX - 16;
@@ -128,14 +133,13 @@ function Board({ blockWidth, scrolled, changeScrollLock, getSCrollY }: Readonly<
                                 }
                             }}
                         >
-                            <div className="w-full h-full rounded-xl" style={{ backgroundColor: dragging === k ? 'transparent' : theme === 'light' ? '#ffffff6f' : '#2828286f' }}>
-                                <AppletHost.Host appletKey={k} entry="Test" index={index} code={`class Test { constructor() {} onMount() {} render() { return "hello" } }`} />
+                            <div className="overflow-hidden w-full h-full rounded-xl" style={{ backgroundColor: dragging === k ? 'transparent' : theme === 'light' ? '#ffffff6f' : '#2828286f' }}>
+                                <AppletHost.Host key={k} appletKey={k} entry="Test" index={index} code={getClockWidgetData()} />
                             </div>
                         </div>
                     ))
                 }
-                <Card
-                    isBlurred
+                <div
                     ref={shadowRef}
                     className="rounded-xl"
                     style={{ transition: 'opacity 250ms', display: 'none', backgroundColor: 'transparent', width: dragging ? boxes[dragging].w : 150, height: dragging ? boxes[dragging].h : 150, transform: `translate(${x - mdX}px, ${y - mdY}px)`, position: 'absolute', left: 0, top: 0 }}
@@ -153,7 +157,7 @@ function Board({ blockWidth, scrolled, changeScrollLock, getSCrollY }: Readonly<
                     Object.keys(boxes).map((k: string) => (
                         <div
                             id={k}
-                            style={{ border: dragId === k ? '2px solid #fff' : undefined, width: 150, height: 150, transform: `translate(${boxes[k].x}px, ${boxes[k].y}px)`, position: 'absolute', left: 0, top: 0, padding: 4 }}
+                            style={{ border: dragging === k ? '2px solid #fff' : undefined, width: 150, height: 150, transform: `translate(${boxes[k].x}px, ${boxes[k].y}px)`, position: 'absolute', left: 0, top: 0, padding: 4 }}
 
                         >
                             <div className="w-full h-full rounded-xl" style={{ backgroundColor: dragging === k ? 'transparent' : boxes[k].color }} />

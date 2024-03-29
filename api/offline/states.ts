@@ -21,3 +21,8 @@ export const showMainLoading = hookstate(false);
 export const switchMainLoading = (v: boolean) => {
 	showMainLoading.set(v);
 }
+
+export const draggingId = hookstate<string | undefined>(undefined);
+export const switchDraggingId = (v: string) => {
+	draggingId.set(v);
+}

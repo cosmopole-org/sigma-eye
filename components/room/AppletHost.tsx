@@ -1,7 +1,96 @@
+"use client"
+
 import MwcDriver from "applet-mwc"
 import { useEffect, useRef } from "react"
 import { Applet, Controls } from "applet-vm"
 import Native, { intervalHolder, timeoutHolder } from "./Native"
+
+const tools = `
+class Image {
+    constructor() {
+
+    }
+    onMount() {
+
+    }
+    onUnmount() {
+
+    }
+    render() {
+        return nativeElement('image', this.props, this.styles, this.children)
+    }
+}
+class Box {
+constructor() {
+
+}
+onMount() {
+
+}
+onUnmount() {
+
+}
+render() {
+    return nativeElement('box', this.props, this.styles, this.children)
+}
+}
+class Text {
+constructor() {
+
+}
+onMount() {
+
+}
+onUnmount() {
+
+}
+render() {
+    return nativeElement('text', this.props, this.styles, [])
+}
+}
+class Button {
+constructor() {
+
+}
+onMount() {
+
+}
+onUnmount() {
+
+}
+render() {
+    return nativeElement('button', this.props, this.styles, [])
+}
+}
+class Tabs {
+constructor() {
+
+}
+onMount() {
+
+}
+onUnmount() {
+
+}
+render() {
+    return nativeElement('tabs', this.props, this.styles, this.children)
+}
+}
+class PrimaryTab {
+constructor() {
+
+}
+onMount() {
+
+}
+onUnmount() {
+
+}
+render() {
+    return nativeElement('primary-tab', this.props, this.styles, this.children)
+}
+}
+`
 
 let hostLoaded: { [id: string]: boolean } = {}
 
@@ -26,65 +115,52 @@ const unloadAllHosts = () => {
 
 const Host = (props: { isWidget?: boolean, appletKey: string, code: string, index: number, entry: string, onClick?: () => void, room?: any, onCancel?: () => void, overlay?: boolean }) => {
     const hostContainerrId = `AppletHost:${props.appletKey}`
-    const appletRef = useRef(new Applet(props.appletKey))
-    const rootRef = useRef(null)
-    const isSafezone = props.code?.startsWith('safezone/')
-    useEffect(() => {
+    const appletRef = useRef<Applet | null>(null)
+    const rootRef = useRef<HTMLDivElement>(null)
+    const loadApp = () => {
         if (props.code) {
-            if (!isSafezone) {
+            if (rootRef.current !== null) {
+                rootRef.current.innerHTML = ''
                 hostLoaded[props.appletKey] = true
-                appletRef.current.fill(props.code)
+                appletRef.current = new Applet(props.appletKey)
+                appletRef.current.fill(`${tools} ${props.code}`);
                 appletRef.current.setContextBuilder((mod) => new Native(mod, Controls))
-                let root = document.getElementById(hostContainerrId)
-                if (root !== null) {
-                    root.innerHTML = ''
-                    let driver = new MwcDriver(appletRef.current, root)
-                    driver.start(props.entry)
-                }
+                let driver = new MwcDriver(appletRef.current, rootRef.current)
+                driver.start(props.entry)
             }
             setTimeout(() => {
                 if (rootRef.current !== null) {
-                    let root = rootRef.current as HTMLElement
-                    root.style.transform = 'scale(1, 1)'
-                    root.style.opacity = '1'
+                    rootRef.current.style.transform = 'scale(1, 1)'
+                    rootRef.current.style.opacity = '1'
                 }
             }, (props.index + 1) * 75);
         }
-    }, [props.code])
-    useEffect(() => {
-        return () => {
-            if (intervalHolder[props.appletKey]) {
-                Object.values(intervalHolder[props.appletKey]).forEach(interval => {
-                    clearInterval(interval)
-                })
-                delete intervalHolder[props.appletKey]
-            }
-            if (timeoutHolder[props.appletKey]) {
-                Object.values(timeoutHolder[props.appletKey]).forEach(timeout => {
-                    clearTimeout(timeout)
-                })
-                delete timeoutHolder[props.appletKey]
-            }
-            delete hostLoaded[props.appletKey]
+    }
+    const unloadApp = () => {
+        if (intervalHolder[props.appletKey]) {
+            Object.values(intervalHolder[props.appletKey]).forEach(interval => {
+                clearInterval(interval)
+            })
+            delete intervalHolder[props.appletKey]
         }
-    }, [])
-    useEffect(() => {
-        if (props.entry === 'Dummy') {
-            if (intervalHolder[props.appletKey]) {
-                Object.values(intervalHolder[props.appletKey]).forEach(interval => {
-                    clearInterval(interval)
-                })
-                delete intervalHolder[props.appletKey]
-            }
-            if (timeoutHolder[props.appletKey]) {
-                Object.values(timeoutHolder[props.appletKey]).forEach(timeout => {
-                    clearTimeout(timeout)
-                })
-                delete timeoutHolder[props.appletKey]
-            }
-            delete hostLoaded[props.appletKey]
+        if (timeoutHolder[props.appletKey]) {
+            Object.values(timeoutHolder[props.appletKey]).forEach(timeout => {
+                clearTimeout(timeout)
+            })
+            delete timeoutHolder[props.appletKey]
         }
-    }, [props.entry])
+        delete hostLoaded[props.appletKey]
+        if (rootRef.current) {
+            rootRef.current.innerHTML = ''
+        }
+    }
+    useEffect(() => {
+        return () => unloadApp();
+    }, []);
+    useEffect(() => {
+        unloadApp();
+        loadApp();
+    }, [props.code]);
     return (
         <div
             ref={rootRef}
@@ -98,8 +174,7 @@ const Host = (props: { isWidget?: boolean, appletKey: string, code: string, inde
                 transition: 'transform .35s'
             }}
             onClick={props.onClick}
-        >
-        </div>
+        />
     )
 }
 

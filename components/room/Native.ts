@@ -1,3 +1,5 @@
+"use client"
+
 import { INative } from "applet-vm"
 
 export let intervalHolder: { [id: string]: { [id: string]: any } } = {}
@@ -36,20 +38,26 @@ class Native extends INative {
         }
     }
     setInterval = (callback: () => void, period: number) => {
-        let interval = setInterval(callback, period)
-        intervalHolder[this._module.applet._key][interval + ''] = interval
-        this.intervals[interval + ''] = true
-        return interval
+        if (intervalHolder[this._module.applet._key]) {
+            let interval = setInterval(callback, period)
+            intervalHolder[this._module.applet._key][interval + ''] = interval
+            this.intervals[interval + ''] = true
+            return interval
+        }
+        return 0;
     }
     clearInterval = (interval: any) => {
         delete intervalHolder[this._module.applet._key][interval + '']
         delete this.intervals[interval + '']
     }
     setTimeout = (callback: () => void, delay: number) => {
-        let timeout = setTimeout(callback, delay)
-        timeoutHolder[this._module.applet._key][timeout + ''] = timeout
-        this.timeouts[timeout + ''] = true
-        return timeout
+        if (timeoutHolder[this._module.applet._key]) {
+            let timeout = setTimeout(callback, delay)
+            timeoutHolder[this._module.applet._key][timeout + ''] = timeout
+            this.timeouts[timeout + ''] = true
+            return timeout
+        }
+        return 0;
     }
     clearTimeout = (timeout: any) => {
         delete timeoutHolder[this._module.applet._key][timeout + '']
