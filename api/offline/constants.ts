@@ -19,6 +19,17 @@ export function isTouchDevice() {
     return false;
 }
 
+let windowWidth: number = 0;
+
+export let getWindowWidth = () => windowWidth
+export function loadSizes() {
+    if (typeof window !== 'undefined') {
+        if (windowWidth === 0) {
+            windowWidth = window.innerWidth;
+        }
+    }
+}
+
 export const getClockWidgetData = () => clockWidgetData
 
 const emojis = [

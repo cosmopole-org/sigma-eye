@@ -2,8 +2,8 @@
 
 import { INative } from "applet-vm"
 
-export let intervalHolder: { [id: string]: { [id: string]: any } } = {}
-export let timeoutHolder: { [id: string]: { [id: string]: any } } = {}
+export const intervalHolder: { [id: string]: { [id: string]: any } } = {}
+export const timeoutHolder: { [id: string]: { [id: string]: any } } = {}
 
 class Native extends INative {
 
@@ -52,7 +52,7 @@ class Native extends INative {
     }
     setTimeout = (callback: () => void, delay: number) => {
         if (timeoutHolder[this._module.applet._key]) {
-            let timeout = setTimeout(callback, delay)
+            let timeout = setTimeout(callback, delay);
             timeoutHolder[this._module.applet._key][timeout + ''] = timeout
             this.timeouts[timeout + ''] = true
             return timeout

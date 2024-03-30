@@ -1,10 +1,9 @@
 "use client"
 
-import { getClockWidgetData, isTouchDevice } from "@/api/offline/constants";
-import { Card } from "@nextui-org/react";
+import { getClockWidgetData, getWindowWidth, isTouchDevice } from "@/api/offline/constants";
 import { useTheme } from "next-themes";
-import React, { RefObject, memo, useEffect, useRef } from "react";
-import AppletHost from "../room/AppletHost";
+import React, { useEffect, useRef, useState } from "react";
+import AppletHost from "./applet-host";
 import { useHookstate } from "@hookstate/core";
 import { draggingId } from "@/api/offline/states";
 
@@ -56,11 +55,12 @@ function Board({ changeScrollLock, getSCrollY }: Readonly<{ changeScrollLock: (v
     let wid = 0;
     let blockWidth = 0;
     if (typeof window !== 'undefined') {
-        wid = window.innerWidth;
-        blockWidth = (window.innerWidth - 8) / 2;
+        wid = getWindowWidth();
+        blockWidth = (wid - 8) / 2;
     }
     const getOffset = () => (196 + getSCrollY())
     const draggingIdState = useHookstate(draggingId);
+    const [load, setLoaded] = useState(false);
     const { theme } = useTheme();
     const updateDragging = (v: string | undefined) => {
         changeScrollLock(v !== undefined);
@@ -70,12 +70,14 @@ function Board({ changeScrollLock, getSCrollY }: Readonly<{ changeScrollLock: (v
     useEffect(() => {
         Object.keys(boxes).forEach((k: string, index: number) => {
             boxes[k].el = (document.getElementById(k) as HTMLDivElement);
+            console.log(blockWidth)
             boxes[k].w = blockWidth;
             boxes[k].h = blockWidth;
             if (index % 2 === 0) boxes[k].x = 4;
             else boxes[k].x = blockWidth + 4;
         })
         measureFinal();
+        setLoaded(true);
     }, []);
     if (isTouchDevice()) {
         return (
@@ -137,9 +139,11 @@ function Board({ changeScrollLock, getSCrollY }: Readonly<{ changeScrollLock: (v
                         >
                             <div
                                 className="overflow-hidden w-full h-full rounded-xl"
-                                style={{ backgroundColor: dragging === k ? 'transparent' : theme === 'light' ? '#ffffff6f' : '#2828286f',
-                                display: draggingIdState.get({noproxy: true}) === k ? 'none' : 'block' }}>
-                                <AppletHost.Host key={k} appletKey={k} entry="Test" index={index} code={getClockWidgetData()} />
+                                style={{
+                                    backgroundColor: dragging === k ? 'transparent' : theme === 'light' ? '#ffffff6f' : '#2828286f',
+                                    display: draggingIdState.get({ noproxy: true }) === k ? 'none' : 'block'
+                                }}>
+                                {load ? <AppletHost.Host key={k} appletKey={k} entry="Test" index={index} code={getClockWidgetData()} /> : null}
                             </div>
                         </div>
                     ))

@@ -3,7 +3,7 @@
 import MwcDriver from "applet-mwc"
 import { useEffect, useRef } from "react"
 import { Applet, Controls } from "applet-vm"
-import Native, { intervalHolder, timeoutHolder } from "./Native"
+import Native, { intervalHolder, timeoutHolder } from "./native"
 
 const tools = `
 class Image {

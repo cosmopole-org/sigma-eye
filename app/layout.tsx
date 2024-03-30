@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { getHomeCityScrollPos, getHomePeopleScrollPos, getHomeSettingsScrollPos, getRoomBoardScrollPos } from "@/api/offline/backup";
 import { showMainLoading, switchLoading, switchMainLoading, switchRoomLoading } from "../api/offline/states";
+import { loadSizes } from "@/api/offline/constants";
 
 export default function RootLayout({
 	children,
@@ -17,6 +18,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	const path = usePathname();
+	loadSizes();
 	useEffect(() => {
 		switch (path) {
 			case '/api/home/people': {
