@@ -1,9 +1,7 @@
 "use client"
 
 import Board from "../elements/board";
-import { Avatar, Card } from "@nextui-org/react";
 import { hookstate, useHookstate } from "@hookstate/core";
-import { getUsers } from "@/api/offline/constants";
 import { useEffect, useRef, useState } from "react";
 import { useTheme } from "next-themes";
 import RoomBottomNav from "./room-bottomnav";
@@ -31,12 +29,12 @@ export default function RoomModal() {
     }, [open.get({ noproxy: true })]);
     let blockWidth = 0;
     if (typeof window !== 'undefined') {
-        blockWidth = (window.innerWidth - 32) / 2;
+        blockWidth = (window.innerWidth - 16) / 2;
     }
     return (
         <div
-            style={{ backgroundColor: theme === 'light' ? '#eee' : '#171717', display: dis || open.get({ noproxy: true }) ? 'block' : 'none', zIndex: 50, transform: dis && open.get({ noproxy: true }) ? 'translateX(0px)' : 'translateX(50%)', opacity: dis && open.get({ noproxy: true }) ? 1 : 0, transition: 'transform 250ms, opacity 250ms' }}
             className="w-screen h-full fixed right-0 top-0 overflow-x-hidden"
+            style={{ backgroundColor: theme === 'light' ? '#eee' : '#171717', zIndex: 50 }}
         >
             <div ref={scrollerRef} className="overflow-y-auto overflow-x-hidden relative w-full h-full" style={{ overscrollBehavior: 'contain' }}>
                 <div className="fixed top-0 left-0 overflow-hidden w-full h-full">
@@ -50,27 +48,25 @@ export default function RoomModal() {
                         />
                     </div>
                 </div>
-                <RoomNavbar />
-                <div className="w-full h-auto px-4 py-4 relative" style={{ minHeight: 1000 }}>
-                    {
-                        open.get({ noproxy: true }) ? (
-                            <Board
-                                blockWidth={blockWidth}
-                                scrolled={(diff: number) => {
-                                    if (scrollerRef.current) {
-                                        scrollerRef.current.scrollTop += diff;
-                                    }
-                                }}
-                                changeScrollLock={(v: boolean) => {
-                                    if (scrollerRef.current) {
-                                        scrollerRef.current.style.overflow = v ? 'hidden' : 'auto';
-                                    }
-                                }}
-                                getSCrollY={() => {
-                                    return (scrollerRef.current?.scrollTop ?? 0);
-                                }} />
-                        ) : null
-                    }
+                <div className="w-full">
+                    <RoomNavbar />
+                    <div className="w-full h-auto px-2 py-1 relative" style={{ minHeight: 1000 }}>
+                                <Board
+                                    blockWidth={blockWidth}
+                                    scrolled={(diff: number) => {
+                                        if (scrollerRef.current) {
+                                            scrollerRef.current.scrollTop += diff;
+                                        }
+                                    }}
+                                    changeScrollLock={(v: boolean) => {
+                                        if (scrollerRef.current) {
+                                            scrollerRef.current.style.overflow = v ? 'hidden' : 'auto';
+                                        }
+                                    }}
+                                    getSCrollY={() => {
+                                        return (scrollerRef.current?.scrollTop ?? 0);
+                                    }} />
+                    </div>
                 </div>
                 <RoomBottomNav />
             </div>

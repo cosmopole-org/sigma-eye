@@ -3,7 +3,7 @@
 import { getClockWidgetData, isTouchDevice } from "@/api/offline/constants";
 import { Card } from "@nextui-org/react";
 import { useTheme } from "next-themes";
-import React, { memo, useEffect, useRef } from "react";
+import React, { RefObject, memo, useEffect, useRef } from "react";
 import AppletHost from "../room/AppletHost";
 import { useHookstate } from "@hookstate/core";
 import { draggingId } from "@/api/offline/states";
@@ -43,7 +43,7 @@ const measureFinal = () => {
                 }
             }
         })
-        box.y = newY >= 4 ? newY : 4
+        box.y = newY >= 8 ? newY : 8
     })
     Object.keys(boxes).forEach((k: string) => {
         boxes[k].el.style.transform = `translate(${boxes[k].x}px, ${boxes[k].y}px)`
@@ -52,10 +52,12 @@ const measureFinal = () => {
 
 let initialPosX = 0, initialPosY = 0, relPosX = -1, relPosY = -1;
 
-function Board({ blockWidth, scrolled, changeScrollLock, getSCrollY }: Readonly<{ blockWidth: number, changeScrollLock: (v: boolean) => void, scrolled: (v: number) => void, getSCrollY: () => number }>) {
+function Board({ changeScrollLock, getSCrollY }: Readonly<{ changeScrollLock: (v: boolean) => void, getSCrollY: () => number }>) {
     let wid = 0;
+    let blockWidth = 0;
     if (typeof window !== 'undefined') {
         wid = window.innerWidth;
+        blockWidth = (window.innerWidth - 8) / 2;
     }
     const getOffset = () => (196 + getSCrollY())
     const draggingIdState = useHookstate(draggingId);
@@ -70,14 +72,14 @@ function Board({ blockWidth, scrolled, changeScrollLock, getSCrollY }: Readonly<
             boxes[k].el = (document.getElementById(k) as HTMLDivElement);
             boxes[k].w = blockWidth;
             boxes[k].h = blockWidth;
-            if (index % 2 === 0) boxes[k].x = 0;
-            else boxes[k].x = blockWidth;
+            if (index % 2 === 0) boxes[k].x = 4;
+            else boxes[k].x = blockWidth + 4;
         })
         measureFinal();
     }, []);
     if (isTouchDevice()) {
         return (
-            <div className="h-[1000px] absolute overflow-hidden" style={{width: wid - 16}}>
+            <div style={{ overflowX: 'hidden', width: wid - 8, height: 1000, minHeight: 1000, position: 'relative' }}>
                 {
                     Object.keys(boxes).map((k: string, index: number) => (
                         <div
@@ -108,8 +110,8 @@ function Board({ blockWidth, scrolled, changeScrollLock, getSCrollY }: Readonly<
                                     const b = boxes[k];
                                     b.x = clientX - mdX + initialPosX;
                                     b.y = clientY - mdY + initialPosY;
-                                    if (b.x < 0) b.x = 0
-                                    if ((b.x + b.w) > window.innerWidth - 32) b.x = window.innerWidth - 32 - b.w
+                                    if (b.x < 4) b.x = 4
+                                    if ((b.x + b.w) > window.innerWidth - 4) b.x = window.innerWidth - 4 - b.w
                                     if (shadowRef.current) {
                                         shadowRef.current.style.transform = `translate(${clientX - (relPosX >= 0 ? relPosX : 25) - 16}px, ${clientY - (relPosY >= 0 ? relPosY : 25) - getOffset()}px)`;
                                     }
@@ -133,7 +135,10 @@ function Board({ blockWidth, scrolled, changeScrollLock, getSCrollY }: Readonly<
                                 }
                             }}
                         >
-                            <div className="overflow-hidden w-full h-full rounded-xl" style={{ backgroundColor: dragging === k ? 'transparent' : theme === 'light' ? '#ffffff6f' : '#2828286f' }}>
+                            <div
+                                className="overflow-hidden w-full h-full rounded-xl"
+                                style={{ backgroundColor: dragging === k ? 'transparent' : theme === 'light' ? '#ffffff6f' : '#2828286f',
+                                display: draggingIdState.get({noproxy: true}) === k ? 'none' : 'block' }}>
                                 <AppletHost.Host key={k} appletKey={k} entry="Test" index={index} code={getClockWidgetData()} />
                             </div>
                         </div>

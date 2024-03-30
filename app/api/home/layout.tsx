@@ -3,7 +3,6 @@
 import { setHomeCityScrollPos, setHomePeopleScrollPos, setHomeSettingsScrollPos } from "@/api/offline/backup";
 import { showLoading } from "@/api/offline/states";
 import HomeBottomNav, { selectedHomeSection } from "@/components/home/home-bottomnav";
-import RoomModal from "@/components/home/room-modal";
 import { useHookstate } from "@hookstate/core";
 import { Card, CircularProgress } from "@nextui-org/react";
 import { useEffect } from "react";
@@ -55,7 +54,6 @@ export default function HomeLayout({
 					) : null
 				}
 				<HomeBottomNav />
-				<RoomModal />
 			</main>
 		</div>
 	);
