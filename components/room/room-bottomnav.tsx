@@ -4,18 +4,24 @@ import { Card } from "@nextui-org/react";
 import { BottomNavItem } from "../elements/bottomnav-item";
 import { hookstate, useHookstate } from "@hookstate/core";
 import { useTheme } from "next-themes";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { switchRoomLoading } from "@/api/offline/states";
+import { useEffect } from "react";
 
 export const selectedRoomSection = hookstate("board");
-export const switchHomeSection = (s: string) => {
+export const switchRoomSection = (s: string) => {
     selectedRoomSection.set(s);
 }
 
 export default function RoomBottomNav() {
     const { theme } = useTheme();
     const router = useRouter();
+    const path = usePathname();
     const selectedState = useHookstate(selectedRoomSection);
+    useEffect(() => {
+        let pArr = path.split('/')
+        switchRoomSection(pArr[pArr.length - 1]);
+    }, []);
     const onItemClick = (key: string) => () => {
         selectedState.set(key);
         switchRoomLoading(true);

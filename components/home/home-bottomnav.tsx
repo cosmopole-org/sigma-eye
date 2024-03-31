@@ -3,8 +3,9 @@
 import { Card } from "@nextui-org/react";
 import { BottomNavItem } from "../elements/bottomnav-item";
 import { hookstate, useHookstate } from "@hookstate/core";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { switchLoading } from "../../api/offline/states";
+import { useEffect } from "react";
 
 export const selectedHomeSection = hookstate("city");
 export const switchHomeSection = (s: string) => {
@@ -14,6 +15,11 @@ export const switchHomeSection = (s: string) => {
 export default function HomeBottomNav() {
     const selectedState = useHookstate(selectedHomeSection);
     const router = useRouter();
+    const path = usePathname();
+    useEffect(() => {
+        let pArr = path.split('/')
+        switchHomeSection(pArr[pArr.length - 1]);
+    }, []);
     const onItemClick = (key: string) => () => {
         selectedState.set(key);
         switchLoading(true);

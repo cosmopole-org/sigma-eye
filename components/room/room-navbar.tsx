@@ -2,7 +2,7 @@
 
 import { Avatar, Navbar, NavbarContent } from "@nextui-org/react";
 import { useHookstate } from "@hookstate/core";
-import HomeSearchbar from "./home-searchbar";
+import HomeSearchbar from "../home/home-searchbar";
 import IconButton from "../elements/icon-button";
 import { selectedRoomSection } from "./room-bottomnav";
 import { getUsers } from "@/api/offline/constants";
@@ -13,7 +13,7 @@ export default function RoomNavbar() {
     const roomSectionState = useHookstate(selectedRoomSection);
     return (
         <Navbar
-            shouldHideOnScroll
+            shouldHideOnScroll={roomSectionState.get({ noproxy: true }) === 'board'}
             isBordered
             className={roomSectionState.get({ noproxy: true }) === 'board' ? "h-[120px] pb-4" : "h-[64px] pb-1"}
         >

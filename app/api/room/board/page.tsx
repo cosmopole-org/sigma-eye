@@ -1,7 +1,7 @@
 "use client"
 
-import BoardEl from "@/components/room/board";
-import RoomNavbar from "@/components/home/room-navbar";
+import BoardEl from "@/components/room/room-board";
+import RoomNavbar from "@/components/room/room-navbar";
 import { useTheme } from "next-themes";
 import { useRef } from "react";
 

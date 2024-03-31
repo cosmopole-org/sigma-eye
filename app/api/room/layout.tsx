@@ -1,7 +1,7 @@
 "use client"
 
 import { setHomeCityScrollPos, setHomePeopleScrollPos, setHomeSettingsScrollPos } from "@/api/offline/backup";
-import RoomBottomNav, { selectedRoomSection } from "@/components/home/room-bottomnav";
+import RoomBottomNav, { selectedRoomSection } from "@/components/room/room-bottomnav";
 import { useHookstate } from "@hookstate/core";
 import { Card, CircularProgress } from "@nextui-org/react";
 import { useEffect } from "react";

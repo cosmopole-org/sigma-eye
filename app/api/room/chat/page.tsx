@@ -1,7 +1,7 @@
 "use client"
 
-import BoardEl from "@/components/room/board";
-import RoomNavbar from "@/components/home/room-navbar";
+import ChatEl from "@/components/room/room-chat";
+import RoomNavbar from "@/components/room/room-navbar";
 import { useTheme } from "next-themes";
 import { useRef } from "react";
 
@@ -22,15 +22,7 @@ export default function Board() {
                 </div>
             </div>
             <RoomNavbar />
-            <BoardEl
-                changeScrollLock={(v: boolean) => {
-                    if (containerRef.current) {
-                        containerRef.current.style.overflow = v ? 'hidden' : '';
-                    }
-                }}
-                getSCrollY={() => {
-                    return (containerRef.current?.scrollTop ?? 0);
-                }} />
+            <ChatEl />
         </div>
     );
 }
