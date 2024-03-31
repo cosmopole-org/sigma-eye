@@ -15,7 +15,7 @@ export default function RoomNavbar() {
         <Navbar
             shouldHideOnScroll={roomSectionState.get({ noproxy: true }) === 'board'}
             isBordered
-            className={roomSectionState.get({ noproxy: true }) === 'board' ? "h-[120px] pb-4" : "h-[64px] pb-1"}
+            className={roomSectionState.get({ noproxy: true }) === 'board' ? "h-[120px] pb-4" : "h-[64px]"}
         >
             <NavbarContent as="div" className={"items-center w-full " + (roomSectionState.get({ noproxy: true }) === 'board' ? "h-[120px]" : "h-[64px]")} justify="center">
                 <div className={"w-full"}>
