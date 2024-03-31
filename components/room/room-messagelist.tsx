@@ -3,6 +3,9 @@
 import TextMessage from "./message/text";
 import React from 'react';
 import { List, AutoSizer, CellMeasurer, CellMeasurerCache } from 'react-virtualized';
+import PhotoMessage from "./message/photo";
+import VideoMessage from "./message/video";
+import AudioMessage from "./message/audio";
 
 const rowCount = 20;
 
@@ -31,7 +34,7 @@ function renderRow({ index, key, style, parent }: { index: number, key: any, sty
             rowIndex={index}>
             {({ registerChild, measure }: any) => (
                 <div style={style} ref={registerChild}>
-                    <TextMessage key={index} rightSide={index % 2 === 0} />
+                    <AudioMessage key={index} rightSide={index % 2 === 0} />
                 </div>
             )}
         </CellMeasurer>
