@@ -1,12 +1,10 @@
 'use client'
 
-import { getUsers } from "@/api/offline/constants";
-import Icon from "@/components/elements/icon";
 import IconButton from "@/components/elements/icon-button";
-import { HeartFilledIcon } from "@/components/icons";
-import { Card, CardHeader, CardBody, CardFooter, Avatar, Chip, Image, Slider, Button } from "@nextui-org/react";
+import { Card, CardBody, Image } from "@nextui-org/react";
 import { useTheme } from "next-themes";
 import React from "react";
+import Waveform from '../../elements/waveform/waveform';
 
 export default function AudioMessage({ rightSide }: Readonly<{ rightSide: boolean }>) {
     const { theme } = useTheme();
@@ -32,13 +30,10 @@ export default function AudioMessage({ rightSide }: Readonly<{ rightSide: boolea
                         <IconButton name="play" className="absolute right-2 top-2" />
                         <div className="flex flex-col mt-3 gap-1">
                             <Waveform
-                                style={{ width: 128, position: 'absolute', left: 60, top: 8, height: 56 }}
-                                docId={props.message.data.docId}
-                                tag={`${props.room.id}-${props.message.id}-waveform`}
-                                room={props.room}
+                                style={{ width: 268, height: 40, marginLeft: 2, marginTop: -8 }}
                                 isPreview={true}
                             />
-                            <div className="flex justify-between">
+                            <div className="flex justify-between -mt-2">
                                 <p className="text-small">1:23</p>
                                 <p className="text-small text-foreground/50">4:32</p>
                             </div>

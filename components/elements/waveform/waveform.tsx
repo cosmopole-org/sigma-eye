@@ -1,10 +1,7 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
-import waveformAvgChunker from './waveformAvgChunker'
+import waveformAvgChunker from './waveformAvgChunker';
 import useSetTrackProgress from './useSetTrackProgress'
-import { api } from '../../../..'
-import IRoom from '../../../../api/models/room'
-import { getProgress, registerAudioProgressListener, seekAudioTo, unregisterAudioProgressListener } from '../../../pages/audioPlayer';
-import { themeColor } from '../../../../App';
+import React from 'react';
 
 const pointCoordinates = (props: {
     index: number, pointWidth: number, pointMargin: number, canvasHeight: number, amplitude: any,
@@ -60,37 +57,11 @@ const paintCanvas = (props: {
     }
 }
 
-const Waveform = (props: { docId: string, tag: string, room: IRoom, isPreview: boolean, style?: any }) => {
+const Waveform = (props: { isPreview: boolean, style?: any }) => {
     const [waveformData, setWaveformData] = useState([
         3, 9, 5, 5, 1, 5, 7, -1, 5, 1, 3, 3, -1, 3, 3, 7, 1, 7, 3, 3, 3, -1, 3, 7, 3, 5, 5, 3, 5, 3, 3, 1, 3, 5, 5, 1, 1, 3, 3, 9, 5, 3, 7, 3, 1, 5, 7, 1, 3, 7, 5, 3, 3, 5, 7, -1, 1, 13, 3, 5, 3, 1, 5, 1, 3, 9, 7, 3, 5, 1, 3, 5, 1, 1, 3, 5, 3, 3, 5, 3, 3, 3, 3, 1, 3, 5, 3, 3, 5, 5, 7, 1, 1, 5, 1, 1, 3, 3, 3, 3
     ])
-    const [doc, setDoc]: [any, any] = useState(undefined)
-    const [trackProgress, setTrackProgress] = useState(getProgress(props.docId) ? getProgress(props.docId) : 0)
-    useEffect(() => {
-        api.services.file.listenToFileTransfer(props.tag, props.docId + '-waveform', (body: { data: Blob }) => {
-            body.data.text().then(text => {
-                let arrStartIndex = text.indexOf('[')
-                let arrEndIndex = text.indexOf(']')
-                let result = []
-                try {
-                    result = JSON.parse(text.substring(arrStartIndex, arrEndIndex + 1))
-                } catch (ex) { }
-                setWaveformData(result)
-            })
-        })
-        api.services.file.getDocuemnt({ towerId: props.room.towerId, roomId: props.room.id, documentId: props.docId }).then((body: any) => {
-            setDoc(body.doc)
-        })
-        api.services.file.waveDown({ towerId: props.room.towerId, roomId: props.room.id, documentId: props.docId })
-        registerAudioProgressListener(props.docId, (percent: number) => {
-            if (!Number.isNaN(percent)) {
-                setTrackProgress(percent)
-            }
-        })
-        return () => {
-            unregisterAudioProgressListener(props.docId)
-        }
-    }, [])
+    const [trackProgress, setTrackProgress] = useState(0)
     const canvasRef = useRef(null)
     const chunkedData = waveformAvgChunker(waveformData)
     const waveformWidth = props.style?.width ? props.style.width : 100
@@ -107,7 +78,7 @@ const Waveform = (props: { docId: string, tag: string, room: IRoom, isPreview: b
         setTimeout(() => {
             paintWaveform()
         });
-    }, [doc, waveformData])
+    }, [waveformData])
     const paintWaveform = useCallback(() => {
         paintCanvas({
             canvasRef,
@@ -118,7 +89,7 @@ const Waveform = (props: { docId: string, tag: string, room: IRoom, isPreview: b
             playingPoint,
             hoverXCoord
         })
-    }, [playingPoint, doc, waveformData])
+    }, [playingPoint, waveformData])
 
     useSetTrackProgress({
         trackProgress, setTrackProgress,
@@ -151,13 +122,13 @@ const Waveform = (props: { docId: string, tag: string, room: IRoom, isPreview: b
         e.stopPropagation();
         if (canvasRef.current) {
             const xCoord = e.clientX - (canvasRef.current as HTMLCanvasElement).getBoundingClientRect().left
-            const seekPerc = xCoord * 100 / waveformWidth
-            if (seekAudioTo(props.docId, seekPerc)) setTrackProgress(seekPerc)
+            const seekPerc = xCoord * 100 / waveformWidth 
+            setTrackProgress(seekPerc)
         }
     }
 
     return (
-        <div style={{ padding: 16 }}>
+        <div>
             {
                 waveformData.length > 0 ? (
                     <canvas
@@ -174,7 +145,7 @@ const Waveform = (props: { docId: string, tag: string, room: IRoom, isPreview: b
                     <div
                         style={{
                             width: 120, height: 0, position: 'absolute', left: 60, top: 40,
-                            borderStyle: 'dashed', borderColor: themeColor.get({ noproxy: true })[100], borderWidth: 2
+                            borderStyle: 'dashed', borderWidth: 2
                         }}
                     />
                 )

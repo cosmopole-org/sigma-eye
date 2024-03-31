@@ -1,12 +1,11 @@
 "use client"
 
 import { getUsers } from "@/api/offline/constants"
-import { Card } from "@nextui-org/react"
+import { Card, Image } from "@nextui-org/react"
 import { roomsListView, switchRoomsList } from "./home-rooms-list"
 import Icon from "../elements/icon"
 import { useTheme } from "next-themes"
 import { useHookstate } from "@hookstate/core"
-import Image from "next/image"
 
 export default function HomeTowersList() {
     const { theme } = useTheme();
