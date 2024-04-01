@@ -11,13 +11,14 @@ import { useRouter } from "next/navigation";
 export default function RoomNavbar() {
     const router = useRouter();
     const roomSectionState = useHookstate(selectedRoomSection);
+    const showSearchbar = ['board', 'files'].includes(roomSectionState.get({ noproxy: true }));
     return (
         <Navbar
-            shouldHideOnScroll={roomSectionState.get({ noproxy: true }) === 'board'}
+            shouldHideOnScroll={showSearchbar}
             isBordered
-            className={roomSectionState.get({ noproxy: true }) === 'board' ? "h-[120px] pb-4" : "h-[64px]"}
+            className={showSearchbar ? "h-[120px] pb-4" : "h-[64px]"}
         >
-            <NavbarContent as="div" className={"items-center w-full " + (roomSectionState.get({ noproxy: true }) === 'board' ? "h-[120px]" : "h-[64px]")} justify="center">
+            <NavbarContent as="div" className={"items-center w-full " + (showSearchbar ? "h-[120px]" : "h-[64px]")} justify="center">
                 <div className={"w-full"}>
                     <div className="flex -ml-1">
                         <IconButton name="back" onClick={() => {
@@ -38,7 +39,7 @@ export default function RoomNavbar() {
                         }} />
                     </div>
                     {
-                        roomSectionState.get({ noproxy: true }) === 'board' ? (
+                        showSearchbar ? (
                             <HomeSearchbar />
                         ) : null
                     }
