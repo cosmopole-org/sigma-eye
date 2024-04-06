@@ -1,6 +1,9 @@
 import { nextui } from '@nextui-org/theme'
 
 /** @type {import('tailwindcss').Config} */
+
+const colors = require('tailwindcss/colors')
+
 module.exports = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -21,7 +24,9 @@ module.exports = {
       'message': '#bbf',
       'link': '#08f'
     },
-    extend: {},
+    extend: {
+      colors
+    },
   },
   darkMode: "class",
   plugins: [nextui()],

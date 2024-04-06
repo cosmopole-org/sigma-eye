@@ -1,24 +1,19 @@
 "use client"
 
+import React from "react";
 import { Avatar, Navbar, NavbarContent } from "@nextui-org/react";
-import { useHookstate } from "@hookstate/core";
-import HomeSearchbar from "../home/home-searchbar";
 import IconButton from "../elements/icon-button";
-import { selectedRoomSection } from "./room-bottomnav";
-import { getUsers } from "@/api/offline/constants";
 import { useRouter } from "next/navigation";
+import { getUsers } from '../../api/offline/constants';
 
-export default function RoomNavbar() {
+export default function CallNavbar() {
     const router = useRouter();
-    const roomSectionState = useHookstate(selectedRoomSection);
-    const showSearchbar = ['board', 'files'].includes(roomSectionState.get({ noproxy: true }));
     return (
         <Navbar
-            shouldHideOnScroll={showSearchbar}
             isBordered
-            className={showSearchbar ? "h-[120px] pb-4" : "h-[64px]"}
+            className={"h-[64px]"}
         >
-            <NavbarContent as="div" className={"items-center w-full " + (showSearchbar ? "h-[120px]" : "h-[64px]")} justify="center">
+            <NavbarContent as="div" className={"items-center w-full h-[64px]"} justify="center">
                 <div className={"w-full"}>
                     <div className="flex -ml-1">
                         <IconButton name="back" onClick={() => {
@@ -32,17 +27,12 @@ export default function RoomNavbar() {
                                 name={"Room 1"}
                                 size={"sm"}
                             />
-                            <span className="ml-3">Room 1</span>
+                            <span className="ml-3">Room 1 Call</span>
                         </p>
-                        <IconButton name="call" onClick={() => {
-                            router.push('/api/call')
+                        <IconButton name="settings" onClick={() => {
+
                         }} />
                     </div>
-                    {
-                        showSearchbar ? (
-                            <HomeSearchbar />
-                        ) : null
-                    }
                 </div>
             </NavbarContent>
         </Navbar >

@@ -28,10 +28,11 @@ export default function RoomBottomNav() {
         router.replace('/api/room/' + key);
     }
     return (
-        <Card isBlurred className="grid grid-cols-3 fixed bottom-0 left-0 w-full h-[72px] pt-1" style={{ borderRadius: '24px 24px 0px 0px', zIndex: 1000, backgroundColor: theme === 'light' ? "#ffffffaf" : "#171717bf" }}>
-            <BottomNavItem itemKey="board" selected={selectedState.get({ noproxy: true })} title="Board" icon="gallery" onClick={onItemClick('board')} />
-            <BottomNavItem itemKey="chat" selected={selectedState.get({ noproxy: true })} title="Chat" icon="music" onClick={onItemClick('chat')} />
-            <BottomNavItem itemKey="files" selected={selectedState.get({ noproxy: true })} title="Files" icon="video" onClick={onItemClick('files')} />
+        <Card isBlurred className="grid grid-cols-4 fixed bottom-0 left-0 w-full h-[72px] pt-1" style={{ borderRadius: '24px 24px 0px 0px', zIndex: 1000, backgroundColor: theme === 'light' ? "#ffffffaf" : "#171717bf" }}>
+            <BottomNavItem itemKey="board" selected={selectedState.get({ noproxy: true })} title="Board" icon="board" onClick={onItemClick('board')} />
+            <BottomNavItem itemKey="chat" selected={selectedState.get({ noproxy: true })} title="Chat" icon="chat" onClick={onItemClick('chat')} />
+            <BottomNavItem itemKey="files" selected={selectedState.get({ noproxy: true })} title="Files" icon="storage" onClick={onItemClick('files')} />
+            <BottomNavItem pt={2} pb={3} iconSize={19} itemKey="settings" selected={selectedState.get({ noproxy: true })} title="Settings" icon="settings" onClick={onItemClick('settings')} />
         </Card >
     )
 }
