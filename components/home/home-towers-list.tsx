@@ -1,7 +1,7 @@
 "use client"
 
 import { getUsers } from "@/api/offline/constants"
-import { Avatar, Card, Image } from "@nextui-org/react"
+import { Avatar, Card } from "@nextui-org/react"
 import { roomsListView, switchRoomsList } from "./home-rooms-list"
 import Icon from "../elements/icon"
 import { useTheme } from "next-themes"
