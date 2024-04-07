@@ -91,7 +91,7 @@ export default function RootLayout({
 	}, [path])
 	const showLoadingState = useHookstate(showMainLoading);
 	const [h, setH] = useState(0)
-	const handleResize = () => setH(window.innerHeight - 56);
+	const handleResize = () => setH(window.innerHeight);
 	useEffect(() => {
 		handleResize()
 		window.addEventListener('resize', handleResize)
