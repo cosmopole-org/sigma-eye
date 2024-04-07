@@ -89,7 +89,7 @@ export default function RootLayout({
 								modules={[EffectCreative]}
 								className="h-full w-full"
 							>
-								<SwiperSlide><div ref={contentRef} className="w-full h-full overflow-x-hidden overflow-y-auto">{children}</div></SwiperSlide>
+								<SwiperSlide className="w-full h-full"><div ref={contentRef} className="w-full h-full overflow-x-hidden overflow-y-auto">{children}</div></SwiperSlide>
 								<SwiperSlide className="w-full h-full" style={{ backdropFilter: 'blur(10px)' }}>
 									<div className="grid grid-cols-2 w-full h-full overflow-auto p-4 gap-2">
 										{getUsers().map(i => (
