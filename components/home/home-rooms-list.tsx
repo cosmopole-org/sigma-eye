@@ -5,19 +5,27 @@ import IconButton from "../elements/icon-button"
 import { getUsers } from "@/api/offline/constants"
 import { hookstate, useHookstate } from "@hookstate/core"
 import { useRouter } from "next/navigation"
+import { useEffect } from "react"
 
 export const roomsListView = hookstate(false);
+const roomsListViewExtra = hookstate(false);
 export const switchRoomsList = (v: boolean) => {
     roomsListView.set(v);
 }
 
 export default function HomeRoomsList() {
     const roomsListState = useHookstate(roomsListView);
+    const roomsListExtraState = useHookstate(roomsListViewExtra);
     const router = useRouter();
-    return (
+    useEffect(() => {
+        setTimeout(() => {
+            roomsListExtraState.set(roomsListState.get({ noproxy: true }));
+        }, 250);
+    }, [roomsListState.get({ noproxy: true })]);
+    return (roomsListState.get({ noproxy: true }) || roomsListExtraState.get({ noproxy: true })) ? (
         <Card className="fixed top-[172px] overflow-x-hidden" style={{
             width: 'calc(100% - 78px)', height: 'calc(100% - 184px)', borderRadius: '24px 0px 0px 0px', right: 0,
-            transition: 'transform 250ms', transform: roomsListState.get({ noproxy: true }) ? 'translateX(0px)' : 'translateX(+100%)'
+            transition: 'transform 250ms', transform: (roomsListState.get({ noproxy: true }) && roomsListExtraState.get({ noproxy: true })) ? 'translateX(0px)' : 'translateX(+100%)'
         }}>
             <Card radius="none" className="h-10">
                 <div className="flex h-full">
@@ -45,4 +53,5 @@ export default function HomeRoomsList() {
             </div>
         </Card>
     )
+        : null
 }
