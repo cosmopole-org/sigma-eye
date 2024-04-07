@@ -15,9 +15,23 @@ import { EffectCreative } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/effect-creative';
 import { switchHomeNav } from "@/components/home/home-navbar";
+import { switchRoomNav } from "@/components/room/room-navbar";
+
+let dynamicPath = '';
 
 let oldPath = '';
 let oldScroll = 0;
+let swiperInst: any = null;
+export const enableSwiper = () => {
+	if (swiperInst) {
+		swiperInst.enable();
+	}
+}
+export const disableSwiper = () => {
+	if (swiperInst) {
+		swiperInst.disable();
+	}
+}
 
 export default function RootLayout({
 	children,
@@ -25,17 +39,25 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	const path = usePathname();
+	dynamicPath = path;
 	const scrollPositions = useRef<{ [url: string]: number }>({})
 	loadSizes();
 	const contentRef = useRef<HTMLDivElement>(null);
 	useEffect(() => {
 		const scroller = () => {
 			if (contentRef.current) {
-				if (path.startsWith('/api/home')) {
+				console.log(dynamicPath, contentRef.current.scrollTop);
+				if (dynamicPath.startsWith('/api/home')) {
 					if (oldScroll > contentRef.current.scrollTop) {
 						switchHomeNav(true)
 					} else if (oldScroll < contentRef.current.scrollTop) {
 						switchHomeNav(false);
+					}
+				} else if (dynamicPath.startsWith('/api/room')) {
+					if (oldScroll > contentRef.current.scrollTop) {
+						switchRoomNav(true)
+					} else if (oldScroll < contentRef.current.scrollTop) {
+						switchRoomNav(false);
 					}
 				}
 				oldScroll = contentRef.current.scrollTop;
@@ -48,18 +70,24 @@ export default function RootLayout({
 	}, [])
 	useEffect(() => {
 		if (contentRef.current) {
-			if (oldPath !== path) {
+			if (oldPath !== dynamicPath) {
 				scrollPositions.current[oldPath] = oldScroll;
-				oldPath = path
+				oldPath = dynamicPath
+				oldScroll = 0
 			}
 			contentRef.current.scroll({
-				top: scrollPositions.current[path],
+				top: scrollPositions.current[dynamicPath],
 				behavior: "auto",
 			})
 		}
 		switchLoading(false);
 		switchRoomLoading(false);
 		switchMainLoading(false);
+		if (dynamicPath.startsWith("/api/home")) {
+			switchHomeNav(true);
+		} else if (dynamicPath.startsWith("/api/room")) {
+			switchRoomNav(true);
+		}
 	}, [path])
 	const showLoadingState = useHookstate(showMainLoading);
 	return (
@@ -67,7 +95,7 @@ export default function RootLayout({
 			<head />
 			<body
 				className={clsx(
-					"min-h-screen bg-background font-sans antialiased",
+					"bg-background font-sans antialiased",
 					fontSans.variable
 				)}
 			>
@@ -75,6 +103,9 @@ export default function RootLayout({
 					<div className="relative flex flex-col h-screen">
 						<main className="w-full h-full">
 							<Swiper
+								onInit={(swiper: any) => {
+									swiperInst = swiper
+								}}
 								grabCursor={true}
 								effect={'creative'}
 								creativeEffect={{

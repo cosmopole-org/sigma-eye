@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 import AppletHost from "./applet-host";
 import { useHookstate } from "@hookstate/core";
 import { draggingId } from "@/api/offline/states";
+import { disableSwiper, enableSwiper } from "@/app/layout";
 
 type Box = { el: HTMLDivElement | any, key: string, x: number, y: number, w: number, h: number, color: string, oldY: number }
 
@@ -89,6 +90,7 @@ function Board({ changeScrollLock, getSCrollY }: Readonly<{ changeScrollLock: (v
                             style={{ border: dragging === k ? '2px solid #fff' : undefined, width: boxes[k].w, height: boxes[k].h, transform: `translate(${boxes[k].x}px, ${boxes[k].y}px)`, position: 'absolute', left: 0, top: 0, padding: 4 }}
                             onContextMenu={e => {
                                 e.preventDefault();
+                                disableSwiper();
                                 mdX = e.clientX - 16;
                                 mdY = e.clientY - getOffset();
                                 const b = boxes[k]
@@ -134,6 +136,7 @@ function Board({ changeScrollLock, getSCrollY }: Readonly<{ changeScrollLock: (v
                                     })
                                     measureFinal()
                                     updateDragging(undefined)
+                                    enableSwiper();
                                 }
                             }}
                         >

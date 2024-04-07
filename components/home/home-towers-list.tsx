@@ -14,7 +14,7 @@ export default function HomeTowersList() {
         <div className="w-full h-auto pl-4 pr-4 pb-20">
             <div className={(roomsListState.get({ noproxy: true }) ? "h-[172px]" : "h-0")} />
             <Card onClick={() => {
-                switchRoomsList(true)
+                switchRoomsList(true);
             }} className="mt-4 m-h-16 w-full bg-transparent" key={'home'} isPressable shadow="none">
                 <div className="flex gap-2 w-full">
                     <Icon iconType="circle" name="home" size={[48, 48]} className="w-[68px] p-1" color={theme === 'light' ? "blue" : "#aaa"} />
@@ -32,7 +32,7 @@ export default function HomeTowersList() {
                 getUsers().map((item, index) => (
                     <Card onClick={
                         () => {
-                            switchRoomsList(true)
+                            switchRoomsList(true);
                         }
                     } className="mt-4 m-h-16 w-full bg-transparent" key={item.id} isPressable shadow="none">
                         <div className="flex gap-2 w-full">

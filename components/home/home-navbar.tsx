@@ -23,8 +23,8 @@ export default function HomeNavbar() {
     return (
         <Navbar
             isBordered
-            className={((!roomsListState.get({ noproxy: true }) || (homeSectionState.get({ noproxy: true }) !== 'spaces')) ? undefined : 'fixed') + " " + (homeSectionState.get({ noproxy: true }) === 'spaces' ? "h-[172px]" : "h-[128px]")}
-            style={{ transform: homeNavShowState.get({ noproxy: true }) ? 'translateY(0px)' : 'translateY(-100%)', transition: 'transform 400ms' }}
+            className={'bg-white dark:bg-black ' + ((!roomsListState.get({ noproxy: true }) || (homeSectionState.get({ noproxy: true }) !== 'spaces')) ? undefined : 'fixed') + " " + (homeSectionState.get({ noproxy: true }) === 'spaces' ? "h-[172px]" : "h-[128px]")}
+            style={{ transform: (homeNavShowState.get({ noproxy: true }) || roomsListState.get({noproxy: true})) ? 'translateY(0px)' : 'translateY(-100%)', transition: 'transform 400ms' }}
         >
             <NavbarContent as="div" className={"items-center w-full " + (homeSectionState.get({ noproxy: true }) === 'spaces' ? "h-[172px]" : "h-[128px]")} justify="center">
                 <div className={"w-full"} style={{ paddingTop: (homeSectionState.get({ noproxy: true }) === 'spaces' ? 20 : 0) }}>
