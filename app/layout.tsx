@@ -6,7 +6,7 @@ import { Providers } from "./providers";
 import clsx from "clsx";
 import { useHookstate } from "@hookstate/core";
 import { Card, CircularProgress } from "@nextui-org/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { showMainLoading, switchLoading, switchMainLoading, switchRoomLoading } from "../api/offline/states";
 import { getUsers, loadSizes } from "@/api/offline/constants";
@@ -90,10 +90,14 @@ export default function RootLayout({
 		}
 	}, [path])
 	const showLoadingState = useHookstate(showMainLoading);
-	let h = 0;
-	if (typeof window !== 'undefined') {
-		h = window.innerHeight;
-	}
+	const [h, setH] = useState(0)
+	const handleResize = () => setH(window.innerHeight)
+	useEffect(() => {
+		handleResize()
+		window.addEventListener('resize', handleResize)
+		return () => window.removeEventListener('resize', handleResize)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<head />
@@ -104,7 +108,7 @@ export default function RootLayout({
 				)}
 			>
 				<Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-					<div className="relative flex flex-col" style={{ height: h }}>
+					<div className="relative flex flex-col">
 						<main className="w-full h-full">
 							<Swiper
 								onInit={(swiper: any) => {
