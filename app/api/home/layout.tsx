@@ -17,11 +17,11 @@ export default function HomeLayout({
 	useEffect(() => {
 		const scroller = () => {
 			switch (homeSectionState.get({ noproxy: true })) {
-				case 'people': {
+				case 'contacts': {
 					setHomePeopleScrollPos(document.documentElement.scrollTop);
 					break;
 				}
-				case 'city': {
+				case 'spaces': {
 					setHomeCityScrollPos(document.documentElement.scrollTop);
 					break;
 				}

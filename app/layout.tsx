@@ -21,11 +21,11 @@ export default function RootLayout({
 	loadSizes();
 	useEffect(() => {
 		switch (path) {
-			case '/api/home/people': {
+			case '/api/home/contacts': {
 				document.documentElement.scrollTop = getHomePeopleScrollPos();
 				break;
 			}
-			case '/api/home/city': {
+			case '/api/home/spaces': {
 				document.documentElement.scrollTop = getHomeCityScrollPos();
 				break;
 			}

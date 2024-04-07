@@ -14,12 +14,12 @@ export default function HomeNavbar() {
     const homeSectionState = useHookstate(selectedHomeSection);
     return (
         <Navbar
-            shouldHideOnScroll={!roomsListState.get({ noproxy: true }) || (homeSectionState.get({ noproxy: true }) !== 'city')}
+            shouldHideOnScroll={!roomsListState.get({ noproxy: true }) || (homeSectionState.get({ noproxy: true }) !== 'spaces')}
             isBordered
-            className={((!roomsListState.get({ noproxy: true }) || (homeSectionState.get({ noproxy: true }) !== 'city')) ? undefined : 'fixed') + " " + (homeSectionState.get({ noproxy: true }) === 'city' ? "h-[172px]" : "h-[128px]")}
+            className={((!roomsListState.get({ noproxy: true }) || (homeSectionState.get({ noproxy: true }) !== 'spaces')) ? undefined : 'fixed') + " " + (homeSectionState.get({ noproxy: true }) === 'spaces' ? "h-[172px]" : "h-[128px]")}
         >
-            <NavbarContent as="div" className={"items-center w-full " + (homeSectionState.get({ noproxy: true }) === 'city' ? "h-[172px]" : "h-[128px]")} justify="center">
-                <div className={"w-full"} style={{ paddingTop: (homeSectionState.get({ noproxy: true }) === 'city' ? 20 : 0) }}>
+            <NavbarContent as="div" className={"items-center w-full " + (homeSectionState.get({ noproxy: true }) === 'spaces' ? "h-[172px]" : "h-[128px]")} justify="center">
+                <div className={"w-full"} style={{ paddingTop: (homeSectionState.get({ noproxy: true }) === 'spaces' ? 20 : 0) }}>
                     <div className="flex pl-1">
                         <HomeMenu />
 
@@ -30,7 +30,7 @@ export default function HomeNavbar() {
                     </div>
                     <HomeSearchbar />
                     {
-                        homeSectionState.get({ noproxy: true }) === 'city' ? (
+                        homeSectionState.get({ noproxy: true }) === 'spaces' ? (
                             <HomeFolders />
                         ) : null
                     }
