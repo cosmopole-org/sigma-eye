@@ -90,6 +90,10 @@ export default function RootLayout({
 		}
 	}, [path])
 	const showLoadingState = useHookstate(showMainLoading);
+	let h = 0;
+	if (typeof window !== 'undefined') {
+		h = window.innerHeight;
+	}
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<head />
@@ -100,7 +104,7 @@ export default function RootLayout({
 				)}
 			>
 				<Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-					<div className="relative flex flex-col h-full">
+					<div className="relative flex flex-col" style={{ height: h }}>
 						<main className="w-full h-full">
 							<Swiper
 								onInit={(swiper: any) => {
