@@ -129,12 +129,12 @@ export default function RootLayout({
 								className="h-full w-full"
 							>
 								<SwiperSlide className="w-full h-full"><div ref={contentRef} className="w-full h-full overflow-x-hidden overflow-y-auto">{children}</div></SwiperSlide>
-								<SwiperSlide className="w-full h-full" style={{ backdropFilter: 'blur(10px)' }}>
-									<div className="grid grid-cols-2 w-full h-full overflow-auto p-4 gap-2">
+								<SwiperSlide className="w-full h-full">
+									<div className="grid grid-cols-2 w-full h-full overflow-auto p-4 gap-2 bg-s-white/70 dark:bg-black/70">
 										{getUsers().map(i => (
-											<Card key={i.id} className="w-full h-48 bg-s-black/80">
+											<div key={i.id} className="w-full h-48 bg-white dark:bg-s-black rounded-lg">
 
-											</Card>
+											</div>
 										))}
 									</div>
 								</SwiperSlide>
