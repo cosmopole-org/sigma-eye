@@ -23,7 +23,7 @@ export default function HomeRoomsList() {
         }, 250);
     }, [roomsListState.get({ noproxy: true })]);
     return (roomsListState.get({ noproxy: true }) || roomsListExtraState.get({ noproxy: true })) ? (
-        <Card className="fixed top-[172px] overflow-x-hidden" style={{
+        <Card className="fixed top-[164px] overflow-x-hidden" style={{
             width: 'calc(100% - 78px)', height: 'calc(100% - 184px)', borderRadius: '24px 0px 0px 0px', right: 0,
             transition: 'transform 250ms', transform: (roomsListState.get({ noproxy: true }) && roomsListExtraState.get({ noproxy: true })) ? 'translateX(0px)' : 'translateX(+100%)'
         }}>

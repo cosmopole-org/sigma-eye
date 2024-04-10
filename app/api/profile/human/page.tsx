@@ -1,8 +1,10 @@
 "use client"
 
 import { getUsers } from "@/api/offline/constants";
+import BlogPost from "@/components/blog/post";
 import Icon from "@/components/elements/icon";
 import IconButton from "@/components/elements/icon-button";
+import Board from "@/components/room/room-board";
 import { Avatar, Button } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import React, { useRef } from "react";
@@ -11,25 +13,55 @@ export default function HumanProfile() {
     const router = useRouter()
     const containerRef = useRef<HTMLDivElement>(null);
     return (
-        <div ref={containerRef} className="w-full h-full relative">
-            <IconButton name="back" className="mt-4 ml-4" onClick={() => router.back()} />
-            <div className="fixed top-14 left-0 overflow-hidden w-full h-auto">
+        <div ref={containerRef} className={"w-full h-full relative"}>
+            <div className="bg-s-white dark:bg-s-black fixed left-0 top-0 w-full h-full" />
+            <div className="area" style={{ backgroundColor: 'rgb(41, 98, 255)' }}>
+                <ul className="circles">
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div >
+            <IconButton color="#fff" name="back" className="absolute top-4 left-4 z-50" onClick={() => router.back()} />
+            <IconButton color="#fff" name="more" className="absolute top-4 right-4 z-50" />
+            <div className="absolute top-4 left-0 overflow-hidden w-full h-auto">
                 <Avatar className="w-32 h-32 ml-auto mr-auto mt-12" src={getUsers()[0].avatar} />
-                <p className="text-xl text-center w-full mt-6">Edward Kasperian</p>
+                <p className="text-xl text-center text-white w-full mt-6">Edward Kasperian</p>
             </div>
-            <div className="justify-center flex w-full h-auto mt-64 pl-4 pr-4 gap-4">
-                <Button className="text-lg">
+            <div className="justify-center flex w-full h-auto pl-4 pr-4 gap-4 absolute top-[280px]">
+                <Button isIconOnly className="w-12 h-12 bg-white dark:bg-s-black" radius="full">
                     <Icon name='message' size={[24, 24]} />
-                    Chat
                 </Button>
-                <Button className="text-lg">
+                <Button isIconOnly className="w-12 h-12 bg-white dark:bg-s-black" radius="full">
+                    <Icon name='toggleCam' size={[24, 24]} />
+                </Button>
+                <Button isIconOnly className="w-12 h-12 bg-white dark:bg-s-black" radius="full">
                     <Icon name='call' size={[24, 24]} />
-                    Call
                 </Button>
-                <Button className="text-lg">
+                <Button isIconOnly className="w-12 h-12 bg-white dark:bg-s-black" radius="full">
                     <Icon name='block' size={[24, 24]} />
-                    Block
                 </Button>
+            </div>
+            <div className="w-full h-auto pl-2 pr-2 pt-3 pb-2 gap-4">
+                <BlogPost />
+                <div className="w-full h-auto absolute left-0">
+                    <Board
+                        changeScrollLock={(v: boolean) => {
+                            if (containerRef.current) {
+                                containerRef.current.style.overflow = v ? 'hidden' : '';
+                            }
+                        }}
+                        getSCrollY={() => {
+                            return (containerRef.current?.scrollTop ?? 0);
+                        }} />
+                </div>
             </div>
         </div>
     );

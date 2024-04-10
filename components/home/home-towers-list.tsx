@@ -12,7 +12,7 @@ export default function HomeTowersList() {
     const roomsListState = useHookstate(roomsListView);
     return (
         <div className="w-full h-auto pl-4 pr-4 pb-20">
-            <div className={(roomsListState.get({ noproxy: true }) ? "h-[172px]" : "h-0")} />
+            <div className={(roomsListState.get({ noproxy: true }) ? "h-[164px]" : "h-0")} />
             <Card onClick={() => {
                 switchRoomsList(true);
             }} className="mt-4 m-h-16 w-full bg-transparent" key={'home'} isPressable shadow="none">
